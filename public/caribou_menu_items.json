@@ -1,0 +1,574 @@
+[
+  {
+    "name": "Protein Lotus Balls",
+    "price_kwd": "1.550"
+  },
+  {
+    "name": "Halloumi Tapenade",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Chicken Club",
+    "price_kwd": "1.250"
+  },
+  {
+    "name": "Strawberry Pineapple Iced Tea",
+    "price_kwd": "1.800"
+  },
+  {
+    "name": "Steak & Cheese",
+    "price_kwd": "1.350"
+  },
+  {
+    "name": "Peach Mango Iced Tea",
+    "price_kwd": "1.800"
+  },
+  {
+    "name": "Original Lemonade",
+    "price_kwd": "1.800"
+  },
+  {
+    "name": "Spanish Latte",
+    "price_kwd": "1.850"
+  },
+  {
+    "name": "Americano",
+    "price_kwd": "1.250"
+  },
+  {
+    "name": "Cold Press",
+    "price_kwd": "1.400"
+  },
+  {
+    "name": "Latte",
+    "price_kwd": "1.400"
+  },
+  {
+    "name": "Hot Chocolate",
+    "price_kwd": "1.700"
+  },
+  {
+    "name": "Cold Press Lemonade",
+    "price_kwd": "1.650"
+  },
+  {
+    "name": "Mocha",
+    "price_kwd": "1.750"
+  },
+  {
+    "name": "Espresso Shaker",
+    "price_kwd": "1.600"
+  },
+  {
+    "name": "Flat White",
+    "price_kwd": "1.450"
+  },
+  {
+    "name": "Cappucino",
+    "price_kwd": "1.400"
+  },
+  {
+    "name": "Coffee of the Day",
+    "price_kwd": "1.100"
+  },
+  {
+    "name": "Espresso",
+    "price_kwd": "1.100"
+  },
+  {
+    "name": "Macchiato",
+    "price_kwd": "1.350"
+  },
+  {
+    "name": "Northern Lite Latte",
+    "price_kwd": "1.750"
+  },
+  {
+    "name": "Breve",
+    "price_kwd": "1.450"
+  },
+  {
+    "name": "Corto",
+    "price_kwd": "1.400"
+  },
+  {
+    "name": "Matcha Tea Latte",
+    "price_kwd": "2.000"
+  },
+  {
+    "name": "Salted Caramel Budino",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Berry White Mocha",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Turtle Mocha",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Caramel High Rise",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Salted Caramel Mocha",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Salted Dark Chocolate Mocha",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Campfire Mocha",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Mint Condition Mocha",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Strawberry Banana Smoothie",
+    "price_kwd": "1.750"
+  },
+  {
+    "name": "Tiramisu Blended",
+    "price_kwd": "2.000"
+  },
+  {
+    "name": "Red Velvet Blended",
+    "price_kwd": "2.000"
+  },
+  {
+    "name": "Fudgy Wudgy Blended",
+    "price_kwd": "2.000"
+  },
+  {
+    "name": "Coffeeless Vanilla",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Vanilla Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Coffeeless Cookies",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Coffeeless Caramel",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Coffee Cooler",
+    "price_kwd": "1.650"
+  },
+  {
+    "name": "Coffeless Chocolate",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Berry White Mocha Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Turtle Mocha Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Caramel High Rise Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Salted Caramel Budino Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Salted Dark Chocolate Mocha Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Campfire Mocha Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Mint Condition Mocha Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Mocha Cooler",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Egg & Bacon Brioche",
+    "price_kwd": "1.750"
+  },
+  {
+    "name": "Egg & Sausage Wrap",
+    "price_kwd": "1.750"
+  },
+  {
+    "name": "Lemon Chicken Sandwich",
+    "price_kwd": "2.100"
+  },
+  {
+    "name": "Halloumi Light Toastie",
+    "price_kwd": "1.950"
+  },
+  {
+    "name": "Turkey & Cheese Pretzel",
+    "price_kwd": "1.450"
+  },
+  {
+    "name": "Simit Mix Arabic Cheese",
+    "price_kwd": "1.250"
+  },
+  {
+    "name": "Halloumi Zaatar Sandwich",
+    "price_kwd": "2.050"
+  },
+  {
+    "name": "Turkey Protein Wrap",
+    "price_kwd": "1.950"
+  },
+  {
+    "name": "Turkey Cheese",
+    "price_kwd": "1.950"
+  },
+  {
+    "name": "Chicken Caesar Wrap",
+    "price_kwd": "1.900"
+  },
+  {
+    "name": "Cheese Man’oushe",
+    "price_kwd": "1.300"
+  },
+  {
+    "name": "Honey Turkey Croissant",
+    "price_kwd": "1.950"
+  },
+  {
+    "name": "Cheese Tomato Danish",
+    "price_kwd": "1.100"
+  },
+  {
+    "name": "Cinnamon Roll",
+    "price_kwd": "1.100"
+  },
+  {
+    "name": "Halloumi Pretzel",
+    "price_kwd": "1.550"
+  },
+  {
+    "name": "Three Cheese Croissant",
+    "price_kwd": "1.100"
+  },
+  {
+    "name": "Plain Croissant",
+    "price_kwd": "0.850"
+  },
+  {
+    "name": "Marble Loaf",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Kinder Protein Balls",
+    "price_kwd": "1.550"
+  },
+  {
+    "name": "Triple Chocolate Cookie",
+    "price_kwd": "1.400"
+  },
+  {
+    "name": "Chocolate Wafer",
+    "price_kwd": "0.900"
+  },
+  {
+    "name": "Almond Butter Dates",
+    "price_kwd": "1.150"
+  },
+  {
+    "name": "Turtle Pecan",
+    "price_kwd": "0.900"
+  },
+  {
+    "name": "Chocolate Covered Pretzels",
+    "price_kwd": "0.950"
+  },
+  {
+    "name": "Granola Bar",
+    "price_kwd": "0.750"
+  },
+  {
+    "name": "Protein Maple Balls",
+    "price_kwd": "1.500"
+  },
+  {
+    "name": "Milk Chocolate",
+    "price_kwd": "0.650"
+  },
+  {
+    "name": "Sea Salt",
+    "price_kwd": "0.700"
+  },
+  {
+    "name": "Dark Chocolate",
+    "price_kwd": "0.650"
+  },
+  {
+    "name": "Mixed Nuts Xtra",
+    "price_kwd": "0.750"
+  },
+  {
+    "name": "Roasted Nuts & Fruits",
+    "price_kwd": "0.650"
+  },
+  {
+    "name": "Ginger Shot",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Turmeric Shot",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Chocolate Corn Flakes Clusters",
+    "price_kwd": "1.500"
+  },
+  {
+    "name": "Sweet Chilli & Red Pepper",
+    "price_kwd": "0.700"
+  },
+  {
+    "name": "Salted Peanuts",
+    "price_kwd": "0.450"
+  },
+  {
+    "name": "Hazelnut Cream Bomb",
+    "price_kwd": "0.900"
+  },
+  {
+    "name": "Crispy Caramelized Pecan with Sea Salt",
+    "price_kwd": "1.500"
+  },
+  {
+    "name": "Apple Cinnamon Porridge",
+    "price_kwd": "1.500"
+  },
+  {
+    "name": "Super Seeds Muesli",
+    "price_kwd": "1.500"
+  },
+  {
+    "name": "Nutella Brownie",
+    "price_kwd": "1.400"
+  },
+  {
+    "name": "Glazed Donut",
+    "price_kwd": "0.900"
+  },
+  {
+    "name": "Chocolate Chip Cookie",
+    "price_kwd": "1.100"
+  },
+  {
+    "name": "Pistachio Loaf",
+    "price_kwd": "1.250"
+  },
+  {
+    "name": "Tiramisu Pot",
+    "price_kwd": "1.750"
+  },
+  {
+    "name": "Wild Rice Salad",
+    "price_kwd": "2.050"
+  },
+  {
+    "name": "Chicken Caeser Salad",
+    "price_kwd": "2.100"
+  },
+  {
+    "name": "Protein Banoffee Oats",
+    "price_kwd": "1.750"
+  },
+  {
+    "name": "Bottled Water",
+    "price_kwd": "0.500"
+  },
+  {
+    "name": "Orange",
+    "price_kwd": "1.150"
+  },
+  {
+    "name": "Coconut Water",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Mango Mint Lemonade",
+    "price_kwd": "1.400"
+  },
+  {
+    "name": "Lemon & Mint",
+    "price_kwd": "1.150"
+  },
+  {
+    "name": "Sparkling Water",
+    "price_kwd": "0.750"
+  },
+  {
+    "name": "Voss Mineral Water",
+    "price_kwd": "0.850"
+  },
+  {
+    "name": "Chamomile Mint Lemon",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Green Jasmine",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Ginger Turmeric",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "English Breakfast",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Gunpowder Green",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Organic Assam",
+    "price_kwd": "1.000"
+  },
+  {
+    "name": "Coffee Of The Day Canteen",
+    "price_kwd": "8.500"
+  },
+  {
+    "name": "Latte Hot Canteen",
+    "price_kwd": "10.500"
+  },
+  {
+    "name": "Hot Chocolate Canteen",
+    "price_kwd": "12.500"
+  },
+  {
+    "name": "Cold Press Canteen",
+    "price_kwd": "10.500"
+  },
+  {
+    "name": "Iced Latte Canteen",
+    "price_kwd": "10.500"
+  },
+  {
+    "name": "Iced Mocha Canteen",
+    "price_kwd": "13.000"
+  },
+  {
+    "name": "Cold Press Lemonade Canteen",
+    "price_kwd": "12.000"
+  },
+  {
+    "name": "Iced Mint Condition Canteen",
+    "price_kwd": "13.500"
+  },
+  {
+    "name": "Iced Turtle Mocha Canteen",
+    "price_kwd": "13.500"
+  },
+  {
+    "name": "Iced Campfire Mocha Canteen",
+    "price_kwd": "13.500"
+  },
+  {
+    "name": "Iced Caramel Hi Rise Canteen",
+    "price_kwd": "13.500"
+  },
+  {
+    "name": "Iced Salted Caramel Budino Canteen",
+    "price_kwd": "13.500"
+  },
+  {
+    "name": "Espresso Shaker Canteen",
+    "price_kwd": "13.500"
+  },
+  {
+    "name": "Iced Berry White Mocha Canteen",
+    "price_kwd": "13.500"
+  },
+  {
+    "name": "Iced Spanish Latte Canteen",
+    "price_kwd": "13.500"
+  },
+  {
+    "name": "Iced Latte Growler",
+    "price_kwd": "16.000"
+  },
+  {
+    "name": "Iced Mocha Growler",
+    "price_kwd": "16.250"
+  },
+  {
+    "name": "Iced Spanish Latte Growler",
+    "price_kwd": "16.500"
+  },
+  {
+    "name": "Iced Turtle Mocha Growler",
+    "price_kwd": "16.500"
+  },
+  {
+    "name": "Iced Campfire Mocha Growler",
+    "price_kwd": "16.500"
+  },
+  {
+    "name": "Iced Salted Caramel Budino Growler",
+    "price_kwd": "16.500"
+  },
+  {
+    "name": "Iced Caramel Hi Rise Growler",
+    "price_kwd": "16.500"
+  },
+  {
+    "name": "Iced Espresso Shaker Growler",
+    "price_kwd": "16.000"
+  },
+  {
+    "name": "Cold Press Growler",
+    "price_kwd": "15.000"
+  },
+  {
+    "name": "Cold Press Lemonade Growler",
+    "price_kwd": "15.000"
+  },
+  {
+    "name": "Iced Mint Condition Mocha Growler",
+    "price_kwd": "16.500"
+  },
+  {
+    "name": "Iced Berry White Mocha Growler",
+    "price_kwd": "16.500"
+  },
+  {
+    "name": "French Roast",
+    "price_kwd": "3.450"
+  },
+  {
+    "name": "Columbia",
+    "price_kwd": "3.450"
+  },
+  {
+    "name": "Caribou Blend",
+    "price_kwd": "3.250"
+  },
+  {
+    "name": "Mocha Java",
+    "price_kwd": "3.450"
+  },
+  {
+    "name": "Daybreak",
+    "price_kwd": "3.450"
+  }
+]
