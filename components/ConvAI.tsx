@@ -210,7 +210,7 @@ export function ConvAI() {
   return (
     <div className="flex flex-col items-center gap-y-8 ">
       {/* Initial Video */}
-      {showVideo && (
+      {/* {showVideo && (
         <video
           ref={videoRef}
           src="/large-thumbnail20250216-3097548-1djrrxq.mp4"
@@ -219,7 +219,7 @@ export function ConvAI() {
           muted
           className="w-full md:w-3/4 max-w-lg rounded-3xl mb-24"
         />
-      )}
+      )} */}
 
       {/* Your Order (agent detected) */}
       {!showVideo && recognizedItems.length > 0 && (
@@ -272,7 +272,7 @@ export function ConvAI() {
       )}
 
       {/* Conversation Orb */}
-      <div className="rounded-3xl fixed bottom-8 left-0 right-0 mx-auto w-fit z-50">
+      <div className="rounded-3xl fixed bottom-4 left-0 right-0 mx-auto w-fit z-50">
         <div className="flex flex-col gap-y-4 text-center">
           <div
             className={cn(
