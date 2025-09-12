@@ -265,7 +265,7 @@ export function ConvAI() {
                       <li key={item.name} className="flex flex-col items-center w-32 relative">
                         <div className="relative w-24 h-24 mb-2">
                           <span
-                            className="absolute -top-2 -left-2 bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-sm shadow"
+                            className="absolute -top-2 -left-2 bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-sm "
                             style={{ zIndex: 2 }}
                           >
                             {item.quantity}
