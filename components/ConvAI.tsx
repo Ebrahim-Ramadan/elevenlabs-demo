@@ -101,6 +101,19 @@ export function ConvAI() {
           console.log("Order detected:", recognized);
         }
       }
+
+      // Speak total price if agent says 'خليني احسبلك المجموع' or 'المجموع'
+      if (message.message && (/خليني احسبلك المجموع|المجموع/.test(message.message))) {
+        // Wait 4-6 seconds before speaking
+        setTimeout(() => {
+          const totalPrice = recognizedItems.reduce((sum, item) => {
+            const menuItem = menu.find(m => m.name === item.name);
+            return sum + (menuItem ? parseFloat(menuItem.price_kwd) * item.quantity : 0);
+          }, 0);
+          const utter = new window.SpeechSynthesisUtterance(`المجموع ${totalPrice.toFixed(3)} كويت دينار`);
+          window.speechSynthesis.speak(utter);
+        }, 4000 + Math.floor(Math.random() * 2000)); // 4-6 seconds
+      }
     },
   });
 
