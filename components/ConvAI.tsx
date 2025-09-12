@@ -6,6 +6,7 @@ import { useConversation } from "@11labs/react";
 import { cn } from "@/lib/utils";
 import { Loader,  Square } from "lucide-react"; // Add this at the top if you use lucide icons
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 // Load menu from public folder
 async function fetchMenu() {
@@ -46,6 +47,7 @@ export function ConvAI() {
   const [recognizedItems, setRecognizedItems] = useState<{ name: string; quantity: number }[]>([]);
   const [hasSpokenTotal, setHasSpokenTotal] = useState(false);
   const [showVideo, setShowVideo] = useState(true);
+  const [hasStarted, setHasStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const conversation = useConversation({
@@ -91,60 +93,62 @@ export function ConvAI() {
         "عشرة": 10, "١٠": 10,
       };
 
-      function extractQty(str: string) {
-        // Try to find Arabic word or digit
-        for (const [word, num] of Object.entries(arabicNumbers)) {
-          if (str.includes(word)) return num;
-        }
-        // Try to find digit (English or Arabic)
-        const digitMatch = str.match(/(\d+)/);
-        if (digitMatch) return parseInt(digitMatch[1]);
-        return 1;
-      }
-
-      // Smart extraction: always scan for menu items in every agent message
       if (menu.length > 0 && message.message) {
         const recognized: { name: string; quantity: number }[] = [];
-        const msg = message.message.replace(/[.,،؟!]/g, " "); // Remove punctuation for better matching
+        const msg = message.message.replace(/[.,،؟!]/g, " ");
 
-        // Helper: extract all numbers (Arabic, English) and common "two" words
-        function extractAllQty(str: string) {
-          // English digits
-          const digitMatches = str.match(/\d+/g) || [];
-          // Arabic digits
-          const arabicDigitMatches = str.match(/[\u0660-\u0669]+/g) || [];
-          // Common Arabic words for "two"
+        // Helper: extract quantity from message
+        function extractQty(str: string) {
+          const digitMatch = str.match(/\d+/);
+          const arabicDigitMatch = str.match(/[\u0660-\u0669]+/);
           const twoWords = [
-  "اتنين", "اثنين", "اثنان", "ثنين", "تنين",
-  "تنين", "اتنينه", "اثنينه", "اثنينات", "ثنينات",
-  "اثنينات", "اتنينات", "اتنينات", "اتنينين", "اثنينين",
-  "اتنين يا", "اثنين يا", "ثنين يا", "تنين يا"
-];
-          const twoWordMatches = twoWords.filter(w => str.includes(w));
+            "اتنين", "اثنين", "اثنان", "ثنين", "تنين",
+            "اتنينه", "اثنينه", "اثنينات", "ثنينات",
+            "اثنينات", "اتنينات", "اتنينات", "اتنينين", "اثنينين",
+            "اتنين يا", "اثنين يا", "ثنين يا", "تنين يا"
+          ];
           let qty = 0;
-          digitMatches.forEach(d => qty += parseInt(d));
-          arabicDigitMatches.forEach(d => {
-            // Convert Arabic-Indic digits to English
-            const converted = d.replace(/[\u0660-\u0669]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x0660 + 48));
+          if (digitMatch) qty += parseInt(digitMatch[0]);
+          if (arabicDigitMatch) {
+            const converted = arabicDigitMatch[0].replace(/[\u0660-\u0669]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x0660 + 48));
             qty += parseInt(converted);
+          }
+          twoWords.forEach(w => {
+            if (str.includes(w)) qty += 2;
           });
-          qty += twoWordMatches.length * 2;
           return qty;
         }
 
+        // Check if message is just a quantity update (e.g. "خليهم اتنين")
+        const isQtyUpdate = /(خليهم|خليها|خليه|خلي|خليهم يكونوا|خليهم يبقوا|يبقى|يكونوا)\s*(\d+|[\u0660-\u0669]+|اتنين|اثنين|اثنان|ثنين|تنين)/.test(msg);
+
+        if (isQtyUpdate && recognizedItems.length > 0) {
+          // Update last item's quantity
+          const qty = extractQty(msg);
+          if (qty > 0) {
+            const updated = [...recognizedItems];
+            updated[updated.length - 1].quantity = qty;
+            setRecognizedItems(updated);
+            setHasSpokenTotal(false);
+            setShowVideo(false);
+            console.log("Order updated:", updated);
+            return;
+          }
+        }
+
+        // Flexible word overlap matching for menu items
         menu.forEach(item => {
           const patterns = [item.name, item.arabic_name].filter(Boolean);
           patterns.forEach(pattern => {
-            // Flexible word overlap matching
-            const itemWords = pattern.split(/\s+/).filter(w => w.length > 2);
-            const msgWords = msg.split(/\s+/).filter(w => w.length > 2);
+            const itemWords = pattern.split(/\s+/).filter(w => w.length > 1);
+            const msgWords = msg.split(/\s+/).filter(w => w.length > 1);
             const matchCount = itemWords.filter(w =>
               msgWords.some(mw => mw.includes(w) || w.includes(mw))
             ).length;
+            // If at least 2/3 of the words match, consider it a match
             if (itemWords.length > 0 && matchCount / itemWords.length >= 0.66) {
-              // Extract all quantities from the message
-              let qty = extractAllQty(msg);
-              if (qty === 0) qty = 1; // Default to 1 if nothing found
+              let qty = extractQty(msg);
+              if (qty === 0) qty = 1;
               if (!recognized.some(r => r.name === item.name)) {
                 recognized.push({ name: item.name, quantity: qty });
               }
@@ -152,10 +156,23 @@ export function ConvAI() {
           });
         });
 
+        // Prefer best match if multiple
+        if (recognized.length > 1) {
+          recognized.sort((a, b) => {
+            const aWords = a.name.toLowerCase().split(/\s+/);
+            const bWords = b.name.toLowerCase().split(/\s+/);
+            const msgWords = msg.toLowerCase().split(/\s+/);
+            const aOverlap = aWords.filter(w => msgWords.includes(w)).length;
+            const bOverlap = bWords.filter(w => msgWords.includes(w)).length;
+            return bOverlap - aOverlap;
+          });
+          recognized.splice(1);
+        }
+
         if (recognized.length > 0) {
           setRecognizedItems(recognized);
-          setHasSpokenTotal(false); // Reset for new order
-          setShowVideo(false); // Hide video when order detected
+          setHasSpokenTotal(false);
+          setShowVideo(false);
           console.log("Order detected:", recognized);
         }
       }
@@ -211,6 +228,7 @@ export function ConvAI() {
   }, [recognizedItems, menu]);
 
   async function startConversation() {
+    setHasStarted(true);
     setConnecting(true);
     const hasPermission = await requestMicrophonePermission();
     if (!hasPermission) {
@@ -324,23 +342,34 @@ export function ConvAI() {
                 : "Start conversation"
             }
           >
-            {connecting ? (
-              <Loader className="animate-spin w-6 h-auto text-neutral-500" />
-            ) : null}
-            {conversation.status === "connected" ? (
-              <Square className="w-6 h-auto text-neutral-600 transition-all duration-300 group-hover:text-neutral-900" fill="currentColor" />
-            ) : null}
+            {connecting && (
+              <Loader className="animate-spin w-5 h-auto text-neutral-500" />
+            ) }
+            {conversation.status != "connected" && !connecting&& (
+              <Image
+                src="/voice.svg"
+                alt="Caribou Logo"
+                width={100}
+                height={100}
+                className={"w-5 h-auto "}
+              />
+            ) }
+            {conversation.status === "connected" && (
+              <Square className="w-5 h-auto text-neutral-600 transition-all duration-300 group-hover:text-neutral-900" fill="currentColor" />
+            )}
           </div>
         </div>
-        <p className="flex justify-center text-xs md:text-sm">
+        {/* <p className="flex justify-center text-xs md:text-sm">
           {connecting
-            ?   "..."
+            ? "..."
             : conversation.status === "connected"
             ? conversation.isSpeaking
               ? "Agent is speaking"
               : "Agent is listening"
-            : "Disconnected"}
-        </p>
+            : hasStarted
+            ? "Disconnected"
+            : ""}
+        </p> */}
       </div>
     </div>
       </>
