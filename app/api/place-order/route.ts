@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     } finally {
       client.release();
     }
-  } catch (err) {
+  } catch (err : any) {
     console.log('Error in place-order API:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
