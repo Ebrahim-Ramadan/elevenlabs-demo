@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@11labs/react";
 import { cn } from "@/lib/utils";
 import { Loader, Loader2, XIcon } from "lucide-react"; // Add this at the top if you use lucide icons
+import { BackgroundWave } from "./background-wave";
 
 // Load menu from public folder
 async function fetchMenu() {
@@ -109,9 +110,9 @@ export function ConvAI() {
         menu.forEach(item => {
           const patterns = [item.name, item.arabic_name].filter(Boolean);
           patterns.forEach(pattern => {
-            // Flexible regex: match quantity before or after item, Arabic or English
+            // Match phrases like "2 Chicken Club", "Chicken Club 2", "أربع Chicken Club", "Chicken Club أربع"
             const regex = new RegExp(
-              `(?:(${Object.keys(arabicNumbers).join("|")}|\\d+)\\s*)?${pattern.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}(?:\\s*(${Object.keys(arabicNumbers).join("|")}|\\d+))?`,
+              `(?:([\\d\u0660-\u0669]+)\\s*)?${pattern.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}(?:\\s*([\\d\u0660-\u0669]+))?`,
               "gi"
             );
             let match;
@@ -119,9 +120,9 @@ export function ConvAI() {
             while ((match = regex.exec(message.message)) !== null) {
               // Prefer quantity before, else after, else default to 1
               let qty = 1;
-              if (match[1]) qty = extractQty(match[1]);
-              else if (match[2]) qty = extractQty(match[2]);
-              totalQty += qty;
+              if (match[1]) qty = parseInt(match[1].replace(/[\u0660-\u0669]/g, d => String.fromCharCode(d.charCodeAt(0) - 0x0660 + 48)));
+              else if (match[2]) qty = parseInt(match[2].replace(/[\u0660-\u0669]/g, d => String.fromCharCode(d.charCodeAt(0) - 0x0660 + 48)));
+              totalQty += isNaN(qty) ? 1 : qty;
             }
             if (totalQty > 0) {
               // Avoid duplicates
@@ -208,18 +209,21 @@ export function ConvAI() {
   }, [conversation]);
 
   return (
-    <div className="flex flex-col items-center gap-y-8 ">
-      {/* Initial Video */}
-      {/* {showVideo && (
+    <>
+    {showVideo && (
         <video
           ref={videoRef}
           src="/large-thumbnail20250216-3097548-1djrrxq.mp4"
           autoPlay
           loop
           muted
-          className="w-full md:w-3/4 max-w-lg rounded-3xl mb-24"
+          className="fixed top-0 left-0 w-full h-5/6 rounded-3xl mb-24 object-contain -z-10"
+          style={{ pointerEvents: "none" }}
         />
-      )} */}
+      )}
+    <div className="flex flex-col items-center gap-y-8 w-full h-full">
+      {/* Initial Video */}
+      
 
       {/* Your Order (agent detected) */}
       {!showVideo && recognizedItems.length > 0 && (
@@ -316,5 +320,8 @@ export function ConvAI() {
         </p>
       </div>
     </div>
+      </>
+
   );
+
 }

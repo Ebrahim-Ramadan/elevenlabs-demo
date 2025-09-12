@@ -1,8 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
-import {BackgroundWave} from "@/components/background-wave";
 import Link from "next/link";
-import { GithubLogo} from "@/components/logos";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
@@ -50,7 +48,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
                 </div> */}
             </nav>
             {children}
-            <BackgroundWave/>
+            {/* <BackgroundWave/> */}
         </div>
         </body>
         </html>
