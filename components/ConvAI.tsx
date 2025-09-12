@@ -14,6 +14,7 @@ async function fetchMenu() {
   return data.map((item: any, idx: number) => ({
     name: item.name ?? `Item ${idx + 1}`,
     price_kwd: item.price_kwd,
+    arabic_name: item.arabic_name,
   }));
 }
 
@@ -60,7 +61,7 @@ export function ConvAI() {
       alert('No items to place order.');
     }
   }
-  const [menu, setMenu] = useState<{ name: string; price_kwd: string }[]>([]);
+  const [menu, setMenu] = useState<{ name: string; price_kwd: string, arabic_name: string }[]>([]);
   // Remove manual order state, use only recognizedItems
   const [spokenPrice, setSpokenPrice] = useState<string | null>(null);
   const [recognizedItems, setRecognizedItems] = useState<{ name: string; quantity: number }[]>([]);
@@ -86,40 +87,60 @@ export function ConvAI() {
         setSpokenPrice(`${parseFloat(priceMatch[1]).toFixed(3)} KWD`);
       }
 
-      // Recognize ordered items from message text (dynamic, multi-item)
+      // Arabic numbers and words mapping
+      const arabicNumbers: Record<string, number> = {
+        "واحد": 1, "١": 1,
+        "اثنين": 2, "٢": 2,
+        "ثلاثة": 3, "٣": 3,
+        "أربعة": 4, "٤": 4,
+        "خمسة": 5, "٥": 5,
+        "ستة": 6, "٦": 6,
+        "سبعة": 7, "٧": 7,
+        "ثمانية": 8, "٨": 8,
+        "تسعة": 9, "٩": 9,
+        "عشرة": 10, "١٠": 10,
+      };
+
+      function extractQty(str: string) {
+        // Try to find Arabic word or digit
+        for (const [word, num] of Object.entries(arabicNumbers)) {
+          if (str.includes(word)) return num;
+        }
+        // Try to find digit (English or Arabic)
+        const digitMatch = str.match(/(\d+)/);
+        if (digitMatch) return parseInt(digitMatch[1]);
+        return 1;
+      }
+
+      // Smart extraction: always scan for menu items in every agent message
       if (menu.length > 0 && message.message) {
         const recognized: { name: string; quantity: number }[] = [];
         menu.forEach(item => {
-          // Simple match: look for item name in message text
-          const regex = new RegExp(`\\b${item.name.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}\\b`, "gi");
-          const matches = message.message.match(regex);
-          if (matches) {
-            // Check for quantity (e.g., "2 Americano")
-            const qtyMatch = message.message.match(new RegExp(`(\\d+)\\s*${item.name.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}`, "i"));
-            const quantity = qtyMatch ? parseInt(qtyMatch[1]) : matches.length;
-            recognized.push({ name: item.name, quantity });
-          }
-
-          // Enhanced: detect item after trigger phrases (Arabic)
-          const triggers = ["تبي", "رح أضيف", "أضيف لك", "أضيف" ];
-          triggers.forEach(trigger => {
-            // e.g., "تبي Americano" or "رح أضيف Americano"
-            const triggerRegex = new RegExp(`${trigger}\\s*([\\u0600-\\u06FFa-zA-Z0-9 _-]*)`, "gi");
+          const patterns = [item.name, item.arabic_name].filter(Boolean);
+          patterns.forEach(pattern => {
+            // Flexible regex: match quantity before or after item, Arabic or English
+            const regex = new RegExp(
+              `(?:(${Object.keys(arabicNumbers).join("|")}|\\d+)\\s*)?${pattern.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}(?:\\s*(${Object.keys(arabicNumbers).join("|")}|\\d+))?`,
+              "gi"
+            );
             let match;
-            while ((match = triggerRegex.exec(message.message)) !== null) {
-              // See if the item name appears after the trigger
-              if (match[1] && match[1].includes(item.name)) {
-                // Check for quantity before item name
-                const qtyMatch = match[1].match(new RegExp(`(\\d+)\\s*${item.name.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}`, "i"));
-                const quantity = qtyMatch ? parseInt(qtyMatch[1]) : 1;
-                // Avoid duplicates
-                if (!recognized.some(r => r.name === item.name)) {
-                  recognized.push({ name: item.name, quantity });
-                }
+            let totalQty = 0;
+            while ((match = regex.exec(message.message)) !== null) {
+              // Prefer quantity before, else after, else default to 1
+              let qty = 1;
+              if (match[1]) qty = extractQty(match[1]);
+              else if (match[2]) qty = extractQty(match[2]);
+              totalQty += qty;
+            }
+            if (totalQty > 0) {
+              // Avoid duplicates
+              if (!recognized.some(r => r.name === item.name)) {
+                recognized.push({ name: item.name, quantity: totalQty });
               }
             }
           });
         });
+
         if (recognized.length > 0) {
           setRecognizedItems(recognized);
           setHasSpokenTotal(false); // Reset for new order
@@ -160,7 +181,7 @@ export function ConvAI() {
             .catch(err => {
               console.error('Order placement failed:', err);
             });
-        }, 4000 + Math.floor(Math.random() * 2000)); // 4-6 seconds
+        }, 6000 + Math.floor(Math.random() * 2000)); // 6-8 seconds
       }
     },
   });
@@ -217,20 +238,28 @@ export function ConvAI() {
                 const imgSrcJpg = `/` + slug + `.jpg`;
                 const imgSrcPng = `/` + slug + `.png`;
                 return (
-                  <li key={item.name} className="flex flex-col items-center w-32">
-                    <img
-                      src={imgSrcJpg}
-                      alt={item.name}
-                      onError={e => {
-                        (e.target as HTMLImageElement).src = imgSrcPng;
-                        (e.target as HTMLImageElement).onerror = () => {
-                          (e.target as HTMLImageElement).src = "/favicon.ico";
-                        };
-                      }}
-                      className="w-24 h-24 object-cover rounded-xl border mb-2"
-                    />
+                  <li key={item.name} className="flex flex-col items-center w-32 relative">
+                    <div className="relative w-24 h-24 mb-2">
+                      {/* Quantity badge */}
+                      <span
+                        className="absolute -top-2 -left-2 bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-sm shadow"
+                        style={{ zIndex: 2 }}
+                      >
+                        {item.quantity}
+                      </span>
+                      <img
+                        src={imgSrcJpg}
+                        alt={item.name}
+                        onError={e => {
+                          (e.target as HTMLImageElement).src = imgSrcPng;
+                          (e.target as HTMLImageElement).onerror = () => {
+                            (e.target as HTMLImageElement).src = "/favicon.ico";
+                          };
+                        }}
+                        className="w-24 h-24 object-cover rounded-xl border"
+                      />
+                    </div>
                     <span className="font-semibold text-center">{item.name}</span>
-                    <span className="text-sm text-gray-600">x {item.quantity}</span>
                     <span className="text-sm text-gray-800">
                       {menuItem ? `${parseFloat(menuItem.price_kwd).toFixed(3)} KWD` : "-"}
                     </span>

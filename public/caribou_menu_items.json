@@ -1,574 +1,713 @@
 [
   {
     "name": "Protein Lotus Balls",
-    "price_kwd": "1.550"
+    "price_kwd": "1.550",
+    "arabic_name": "كرات لوتس البروتين"
   },
   {
     "name": "Halloumi Tapenade",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "هليونيمي تابيناد"
   },
   {
     "name": "Chicken Club",
-    "price_kwd": "1.250"
+    "price_kwd": "1.250",
+    "arabic_name": "نادي الدجاج"
   },
   {
     "name": "Strawberry Pineapple Iced Tea",
-    "price_kwd": "1.800"
+    "price_kwd": "1.800",
+    "arabic_name": "شاي مثلج بالفراولة والأناناس"
   },
   {
     "name": "Steak & Cheese",
-    "price_kwd": "1.350"
+    "price_kwd": "1.350",
+    "arabic_name": "ستيك وجبنة"
   },
   {
     "name": "Peach Mango Iced Tea",
-    "price_kwd": "1.800"
+    "price_kwd": "1.800",
+    "arabic_name": "شاي مثلج بخوخ ومانجو"
   },
   {
     "name": "Original Lemonade",
-    "price_kwd": "1.800"
+    "price_kwd": "1.800",
+    "arabic_name": "ليموناضة أصلية"
   },
   {
     "name": "Spanish Latte",
-    "price_kwd": "1.850"
+    "price_kwd": "1.850",
+    "arabic_name": "سبانيش لاتيه"
   },
   {
     "name": "Americano",
-    "price_kwd": "1.250"
+    "price_kwd": "1.250",
+    "arabic_name": "أمريكانو"
   },
   {
     "name": "Cold Press",
-    "price_kwd": "1.400"
+    "price_kwd": "1.400",
+    "arabic_name": "عصير مثلج مضغوط"
   },
-  {
-    "name": "Latte",
-    "price_kwd": "1.400"
-  },
+  
   {
     "name": "Hot Chocolate",
-    "price_kwd": "1.700"
+    "price_kwd": "1.700",
+    "arabic_name": "شوكولاتة ساخنة"
   },
   {
     "name": "Cold Press Lemonade",
-    "price_kwd": "1.650"
+    "price_kwd": "1.650",
+    "arabic_name": "ليموناضة باردة مضغوطة"
   },
   {
     "name": "Mocha",
-    "price_kwd": "1.750"
+    "price_kwd": "1.750",
+    "arabic_name": "موكا"
   },
   {
     "name": "Espresso Shaker",
-    "price_kwd": "1.600"
+    "price_kwd": "1.600",
+    "arabic_name": "إسبريسو شيكر"
   },
   {
     "name": "Flat White",
-    "price_kwd": "1.450"
+    "price_kwd": "1.450",
+    "arabic_name": "فلات وايت"
   },
   {
     "name": "Cappucino",
-    "price_kwd": "1.400"
+    "price_kwd": "1.400",
+    "arabic_name": "كابتشينو"
   },
   {
     "name": "Coffee of the Day",
-    "price_kwd": "1.100"
+    "price_kwd": "1.100",
+    "arabic_name": "قهوة اليوم"
   },
   {
     "name": "Espresso",
-    "price_kwd": "1.100"
+    "price_kwd": "1.100",
+    "arabic_name": "إسبريسو"
   },
   {
     "name": "Macchiato",
-    "price_kwd": "1.350"
+    "price_kwd": "1.350",
+    "arabic_name": "ماكياتو"
   },
   {
     "name": "Northern Lite Latte",
-    "price_kwd": "1.750"
+    "price_kwd": "1.750",
+    "arabic_name": "لاتيه لايت الشمالية"
   },
   {
     "name": "Breve",
-    "price_kwd": "1.450"
+    "price_kwd": "1.450",
+    "arabic_name": "بريفِه"
   },
   {
     "name": "Corto",
-    "price_kwd": "1.400"
+    "price_kwd": "1.400",
+    "arabic_name": "كورْتو"
   },
   {
     "name": "Matcha Tea Latte",
-    "price_kwd": "2.000"
+    "price_kwd": "2.000",
+    "arabic_name": "لاتيه شاي الماتشا"
   },
   {
     "name": "Salted Caramel Budino",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "بودينو كراميل مملّح"
   },
   {
     "name": "Berry White Mocha",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "موكا بيضاء بالتوت"
   },
   {
     "name": "Turtle Mocha",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "موكا ترتل"
   },
   {
     "name": "Caramel High Rise",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كاراميل هاي رايز"
   },
   {
     "name": "Salted Caramel Mocha",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "موكا كراميل مملّح"
   },
   {
     "name": "Salted Dark Chocolate Mocha",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "موكا شوكولاتة داكنة مملّحة"
   },
   {
     "name": "Campfire Mocha",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "موكا مخيم النار"
   },
   {
     "name": "Mint Condition Mocha",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "موكا حالة النعناع"
   },
   {
     "name": "Strawberry Banana Smoothie",
-    "price_kwd": "1.750"
+    "price_kwd": "1.750",
+    "arabic_name": "سموذي فراولة وموز"
   },
   {
     "name": "Tiramisu Blended",
-    "price_kwd": "2.000"
+    "price_kwd": "2.000",
+    "arabic_name": "بُليندِد تيراميسو"
   },
   {
     "name": "Red Velvet Blended",
-    "price_kwd": "2.000"
+    "price_kwd": "2.000",
+    "arabic_name": "بُليندِد ريد فيلفت"
   },
   {
     "name": "Fudgy Wudgy Blended",
-    "price_kwd": "2.000"
+    "price_kwd": "2.000",
+    "arabic_name": "بُليندِد فَجّي وُجّي"
   },
   {
     "name": "Coffeeless Vanilla",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "فانيلا بدون قهوة"
   },
   {
     "name": "Vanilla Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "فانيلا كولر"
   },
   {
     "name": "Coffeeless Cookies",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كوكيز بدون قهوة"
   },
   {
     "name": "Coffeeless Caramel",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كراميل بدون قهوة"
   },
   {
     "name": "Coffee Cooler",
-    "price_kwd": "1.650"
+    "price_kwd": "1.650",
+    "arabic_name": "كولر قهوة"
   },
   {
     "name": "Coffeless Chocolate",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "شوكولاتة بدون قهوة"
   },
   {
     "name": "Berry White Mocha Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كولر موكا بيضاء بالتوت"
   },
   {
     "name": "Turtle Mocha Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كولر موكا ترتل"
   },
   {
     "name": "Caramel High Rise Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كولر كاراميل هاي رايز"
   },
   {
     "name": "Salted Caramel Budino Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كولر بودينو كراميل مملّح"
   },
   {
     "name": "Salted Dark Chocolate Mocha Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كولر موكا شوكولاتة داكنة مملّحة"
   },
   {
     "name": "Campfire Mocha Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كولر موكا مخيم النار"
   },
   {
     "name": "Mint Condition Mocha Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كولر موكا حالة النعناع"
   },
   {
     "name": "Mocha Cooler",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "كولر موكا"
   },
   {
     "name": "Egg & Bacon Brioche",
-    "price_kwd": "1.750"
+    "price_kwd": "1.750",
+    "arabic_name": "بريوش بالبيضة واللحم المقدد"
   },
   {
     "name": "Egg & Sausage Wrap",
-    "price_kwd": "1.750"
+    "price_kwd": "1.750",
+    "arabic_name": "لفافة بيض وسجق"
   },
   {
     "name": "Lemon Chicken Sandwich",
-    "price_kwd": "2.100"
+    "price_kwd": "2.100",
+    "arabic_name": "ساندويتش دجاج بالليمون"
   },
   {
     "name": "Halloumi Light Toastie",
-    "price_kwd": "1.950"
+    "price_kwd": "1.950",
+    "arabic_name": "هاليومي توستي خفيف"
   },
   {
     "name": "Turkey & Cheese Pretzel",
-    "price_kwd": "1.450"
+    "price_kwd": "1.450",
+    "arabic_name": "بريتزل ديك رومي وجبنة"
   },
   {
     "name": "Simit Mix Arabic Cheese",
-    "price_kwd": "1.250"
+    "price_kwd": "1.250",
+    "arabic_name": "سِميت مخلوط جبن عربي"
   },
   {
     "name": "Halloumi Zaatar Sandwich",
-    "price_kwd": "2.050"
+    "price_kwd": "2.050",
+    "arabic_name": "ساندويتش هاليومي زعتر"
   },
   {
     "name": "Turkey Protein Wrap",
-    "price_kwd": "1.950"
+    "price_kwd": "1.950",
+    "arabic_name": "لفافة بروتين ديك رومي"
   },
   {
     "name": "Turkey Cheese",
-    "price_kwd": "1.950"
+    "price_kwd": "1.950",
+    "arabic_name": "جبنة ديك رومي"
   },
   {
     "name": "Chicken Caesar Wrap",
-    "price_kwd": "1.900"
+    "price_kwd": "1.900",
+    "arabic_name": "لفافة سيزر بالدجاج"
   },
   {
     "name": "Cheese Man’oushe",
-    "price_kwd": "1.300"
+    "price_kwd": "1.300",
+    "arabic_name": "مناوشة جبنة"
   },
   {
     "name": "Honey Turkey Croissant",
-    "price_kwd": "1.950"
+    "price_kwd": "1.950",
+    "arabic_name": "كرواسون ديك رومي بالعسل"
   },
   {
     "name": "Cheese Tomato Danish",
-    "price_kwd": "1.100"
+    "price_kwd": "1.100",
+    "arabic_name": "دنماركي جبنة وطماطم"
   },
   {
     "name": "Cinnamon Roll",
-    "price_kwd": "1.100"
+    "price_kwd": "1.100",
+    "arabic_name": "لفة قرفة"
   },
   {
     "name": "Halloumi Pretzel",
-    "price_kwd": "1.550"
+    "price_kwd": "1.550",
+    "arabic_name": "بريتزل هاليومي"
   },
   {
     "name": "Three Cheese Croissant",
-    "price_kwd": "1.100"
+    "price_kwd": "1.100",
+    "arabic_name": "كرواسون ثلاث أجبان"
   },
   {
     "name": "Plain Croissant",
-    "price_kwd": "0.850"
+    "price_kwd": "0.850",
+    "arabic_name": "كرواسون سادة"
   },
   {
     "name": "Marble Loaf",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "رغيف رخامي"
   },
   {
     "name": "Kinder Protein Balls",
-    "price_kwd": "1.550"
+    "price_kwd": "1.550",
+    "arabic_name": "كرات بروتين كندر"
   },
   {
     "name": "Triple Chocolate Cookie",
-    "price_kwd": "1.400"
+    "price_kwd": "1.400",
+    "arabic_name": "كوكيز شوكولاتة ثلاثية"
   },
   {
     "name": "Chocolate Wafer",
-    "price_kwd": "0.900"
+    "price_kwd": "0.900",
+    "arabic_name": "ويفر شوكولاتة"
   },
   {
     "name": "Almond Butter Dates",
-    "price_kwd": "1.150"
+    "price_kwd": "1.150",
+    "arabic_name": "تمر بزبدة لوز"
   },
   {
     "name": "Turtle Pecan",
-    "price_kwd": "0.900"
+    "price_kwd": "0.900",
+    "arabic_name": "تورتل بيكان"
   },
   {
     "name": "Chocolate Covered Pretzels",
-    "price_kwd": "0.950"
+    "price_kwd": "0.950",
+    "arabic_name": "بريتزل مغطى بالشوكولاتة"
   },
   {
     "name": "Granola Bar",
-    "price_kwd": "0.750"
+    "price_kwd": "0.750",
+    "arabic_name": "قضيب جرانولا"
   },
   {
     "name": "Protein Maple Balls",
-    "price_kwd": "1.500"
+    "price_kwd": "1.500",
+    "arabic_name": "كرات بروتين بشر الطحالب" 
   },
   {
     "name": "Milk Chocolate",
-    "price_kwd": "0.650"
+    "price_kwd": "0.650",
+    "arabic_name": "شوكولاتة بالحليب"
   },
   {
     "name": "Sea Salt",
-    "price_kwd": "0.700"
+    "price_kwd": "0.700",
+    "arabic_name": "ملح بحري"
   },
   {
     "name": "Dark Chocolate",
-    "price_kwd": "0.650"
+    "price_kwd": "0.650",
+    "arabic_name": "شوكولاتة داكنة"
   },
   {
     "name": "Mixed Nuts Xtra",
-    "price_kwd": "0.750"
+    "price_kwd": "0.750",
+    "arabic_name": "مكسرات مشكلة إكسترا"
   },
   {
     "name": "Roasted Nuts & Fruits",
-    "price_kwd": "0.650"
+    "price_kwd": "0.650",
+    "arabic_name": "مكسرات محمصة وفواكه"
   },
   {
     "name": "Ginger Shot",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "جرعة زنجبيل"
   },
   {
     "name": "Turmeric Shot",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "جرعة كركم"
   },
   {
     "name": "Chocolate Corn Flakes Clusters",
-    "price_kwd": "1.500"
+    "price_kwd": "1.500",
+    "arabic_name": "عناقيد كورن فليكس بالشوكولاتة"
   },
   {
     "name": "Sweet Chilli & Red Pepper",
-    "price_kwd": "0.700"
+    "price_kwd": "0.700",
+    "arabic_name": "فلفل حلو وحار"
   },
   {
     "name": "Salted Peanuts",
-    "price_kwd": "0.450"
+    "price_kwd": "0.450",
+    "arabic_name": "فول سوداني مملّح"
   },
   {
     "name": "Hazelnut Cream Bomb",
-    "price_kwd": "0.900"
+    "price_kwd": "0.900",
+    "arabic_name": "قنبلة كريم البندق"
   },
   {
     "name": "Crispy Caramelized Pecan with Sea Salt",
-    "price_kwd": "1.500"
+    "price_kwd": "1.500",
+    "arabic_name": "بيكان مكرمل مقرمش مع ملح بحري"
   },
   {
     "name": "Apple Cinnamon Porridge",
-    "price_kwd": "1.500"
+    "price_kwd": "1.500",
+    "arabic_name": "عصيدة تفاح وقرفة"
   },
   {
     "name": "Super Seeds Muesli",
-    "price_kwd": "1.500"
+    "price_kwd": "1.500",
+    "arabic_name": "مووسلي ببذور ممتازة"
   },
   {
     "name": "Nutella Brownie",
-    "price_kwd": "1.400"
+    "price_kwd": "1.400",
+    "arabic_name": "براوني نوتيلا"
   },
   {
     "name": "Glazed Donut",
-    "price_kwd": "0.900"
+    "price_kwd": "0.900",
+    "arabic_name": "دونات مغطى بالسكر"
   },
   {
     "name": "Chocolate Chip Cookie",
-    "price_kwd": "1.100"
+    "price_kwd": "1.100",
+    "arabic_name": "كوكيز رقائق الشوكولاتة"
   },
   {
     "name": "Pistachio Loaf",
-    "price_kwd": "1.250"
+    "price_kwd": "1.250",
+    "arabic_name": "رغيف فستق"
   },
   {
     "name": "Tiramisu Pot",
-    "price_kwd": "1.750"
+    "price_kwd": "1.750",
+    "arabic_name": "وعاء تيراميسو"
   },
   {
     "name": "Wild Rice Salad",
-    "price_kwd": "2.050"
+    "price_kwd": "2.050",
+    "arabic_name": "سلطة الأرز البري"
   },
   {
     "name": "Chicken Caeser Salad",
-    "price_kwd": "2.100"
+    "price_kwd": "2.100",
+    "arabic_name": "سلطة سيزر بالدجاج"
   },
   {
     "name": "Protein Banoffee Oats",
-    "price_kwd": "1.750"
+    "price_kwd": "1.750",
+    "arabic_name": "شوفان بانوفّي بالبروتين"
   },
   {
     "name": "Bottled Water",
-    "price_kwd": "0.500"
+    "price_kwd": "0.500",
+    "arabic_name": "ماء معبأ"
   },
   {
     "name": "Orange",
-    "price_kwd": "1.150"
+    "price_kwd": "1.150",
+    "arabic_name": "برتقال"
   },
   {
     "name": "Coconut Water",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "ماء جوز الهند"
   },
   {
     "name": "Mango Mint Lemonade",
-    "price_kwd": "1.400"
+    "price_kwd": "1.400",
+    "arabic_name": "ليموناضة مانجو ونعناع"
   },
   {
     "name": "Lemon & Mint",
-    "price_kwd": "1.150"
+    "price_kwd": "1.150",
+    "arabic_name": "ليمون ونعناع"
   },
   {
     "name": "Sparkling Water",
-    "price_kwd": "0.750"
+    "price_kwd": "0.750",
+    "arabic_name": "مياه فوارة"
   },
   {
     "name": "Voss Mineral Water",
-    "price_kwd": "0.850"
+    "price_kwd": "0.850",
+    "arabic_name": "مياه فوس المعدنية"
   },
   {
     "name": "Chamomile Mint Lemon",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "بابونج نعناع ليمون"
   },
   {
     "name": "Green Jasmine",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "ياسمين أخضر"
   },
   {
     "name": "Ginger Turmeric",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "زنجبيل كركم"
   },
   {
     "name": "English Breakfast",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "إفطار إنجليزي"
   },
   {
     "name": "Gunpowder Green",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "شاي أخضر غنباودر"
   },
   {
     "name": "Organic Assam",
-    "price_kwd": "1.000"
+    "price_kwd": "1.000",
+    "arabic_name": "آسام عضوي"
   },
   {
     "name": "Coffee Of The Day Canteen",
-    "price_kwd": "8.500"
+    "price_kwd": "8.500",
+    "arabic_name": "قهوة اليوم - عبوة"
   },
   {
     "name": "Latte Hot Canteen",
-    "price_kwd": "10.500"
+    "price_kwd": "10.500",
+    "arabic_name": "لاتيه ساخن - عبوة"
   },
   {
     "name": "Hot Chocolate Canteen",
-    "price_kwd": "12.500"
+    "price_kwd": "12.500",
+    "arabic_name": "شوكولاتة ساخنة - عبوة"
   },
   {
     "name": "Cold Press Canteen",
-    "price_kwd": "10.500"
+    "price_kwd": "10.500",
+    "arabic_name": "عصير مثلج مضغوط - عبوة"
   },
   {
     "name": "Iced Latte Canteen",
-    "price_kwd": "10.500"
+    "price_kwd": "10.500",
+    "arabic_name": "لاتيه مثلج - عبوة"
   },
   {
     "name": "Iced Mocha Canteen",
-    "price_kwd": "13.000"
+    "price_kwd": "13.000",
+    "arabic_name": "موكا مثلج - عبوة"
   },
   {
     "name": "Cold Press Lemonade Canteen",
-    "price_kwd": "12.000"
+    "price_kwd": "12.000",
+    "arabic_name": "ليموناضة باردة مضغوطة - عبوة"
   },
   {
     "name": "Iced Mint Condition Canteen",
-    "price_kwd": "13.500"
+    "price_kwd": "13.500",
+    "arabic_name": "حالـة النعناع مثلجة - عبوة"
   },
   {
     "name": "Iced Turtle Mocha Canteen",
-    "price_kwd": "13.500"
+    "price_kwd": "13.500",
+    "arabic_name": "موكا ترتل مثلجة - عبوة"
   },
   {
     "name": "Iced Campfire Mocha Canteen",
-    "price_kwd": "13.500"
+    "price_kwd": "13.500",
+    "arabic_name": "موكا مخيم النار مثلجة - عبوة"
   },
   {
     "name": "Iced Caramel Hi Rise Canteen",
-    "price_kwd": "13.500"
+    "price_kwd": "13.500",
+    "arabic_name": "كاراميل هاي رايز مثلج - عبوة"
   },
   {
     "name": "Iced Salted Caramel Budino Canteen",
-    "price_kwd": "13.500"
+    "price_kwd": "13.500",
+    "arabic_name": "بودينو كراميل مملّح مثلج - عبوة"
   },
   {
     "name": "Espresso Shaker Canteen",
-    "price_kwd": "13.500"
+    "price_kwd": "13.500",
+    "arabic_name": "إسبريسو شيكر - عبوة"
   },
   {
     "name": "Iced Berry White Mocha Canteen",
-    "price_kwd": "13.500"
+    "price_kwd": "13.500",
+    "arabic_name": "موكا بيضاء بالتوت مثلجة - عبوة"
   },
   {
     "name": "Iced Spanish Latte Canteen",
-    "price_kwd": "13.500"
+    "price_kwd": "13.500",
+    "arabic_name": "سبانيش لاتيه مثلج - عبوة"
   },
   {
     "name": "Iced Latte Growler",
-    "price_kwd": "16.000"
+    "price_kwd": "16.000",
+    "arabic_name": "لاتيه مثلج - جروسلر"
   },
   {
     "name": "Iced Mocha Growler",
-    "price_kwd": "16.250"
+    "price_kwd": "16.250",
+    "arabic_name": "موكا مثلجة - جروسلر"
   },
   {
     "name": "Iced Spanish Latte Growler",
-    "price_kwd": "16.500"
+    "price_kwd": "16.500",
+    "arabic_name": "سبانيش لاتيه مثلج - جروسلر"
   },
   {
     "name": "Iced Turtle Mocha Growler",
-    "price_kwd": "16.500"
+    "price_kwd": "16.500",
+    "arabic_name": "موكا ترتل مثلجة - جروسلر"
   },
   {
     "name": "Iced Campfire Mocha Growler",
-    "price_kwd": "16.500"
+    "price_kwd": "16.500",
+    "arabic_name": "موكا مخيم النار مثلجة - جروسلر"
   },
   {
     "name": "Iced Salted Caramel Budino Growler",
-    "price_kwd": "16.500"
+    "price_kwd": "16.500",
+    "arabic_name": "بودينو كراميل مملّح مثلج - جروسلر"
   },
   {
     "name": "Iced Caramel Hi Rise Growler",
-    "price_kwd": "16.500"
+    "price_kwd": "16.500",
+    "arabic_name": "كاراميل هاي رايز مثلج - جروسلر"
   },
   {
     "name": "Iced Espresso Shaker Growler",
-    "price_kwd": "16.000"
+    "price_kwd": "16.000",
+    "arabic_name": "إسبريسو شيكر مثلج - جروسلر"
   },
   {
     "name": "Cold Press Growler",
-    "price_kwd": "15.000"
+    "price_kwd": "15.000",
+    "arabic_name": "عصير مثلج مضغوط - جروسلر"
   },
   {
     "name": "Cold Press Lemonade Growler",
-    "price_kwd": "15.000"
+    "price_kwd": "15.000",
+    "arabic_name": "ليموناضة باردة مضغوطة - جروسلر"
   },
   {
     "name": "Iced Mint Condition Mocha Growler",
-    "price_kwd": "16.500"
+    "price_kwd": "16.500",
+    "arabic_name": "موكا حالة النعناع مثلجة - جروسلر"
   },
   {
     "name": "Iced Berry White Mocha Growler",
-    "price_kwd": "16.500"
+    "price_kwd": "16.500",
+    "arabic_name": "موكا بيضاء بالتوت مثلجة - جروسلر"
   },
   {
     "name": "French Roast",
-    "price_kwd": "3.450"
+    "price_kwd": "3.450",
+    "arabic_name": "تحميص فرنسي"
   },
   {
     "name": "Columbia",
-    "price_kwd": "3.450"
+    "price_kwd": "3.450",
+    "arabic_name": "كولومبيا"
   },
   {
     "name": "Caribou Blend",
-    "price_kwd": "3.250"
+    "price_kwd": "3.250",
+    "arabic_name": "خليط كاريبو"
   },
   {
     "name": "Mocha Java",
-    "price_kwd": "3.450"
+    "price_kwd": "3.450",
+    "arabic_name": "موكا جافا"
   },
   {
     "name": "Daybreak",
-    "price_kwd": "3.450"
+    "price_kwd": "3.450",
+    "arabic_name": "داي بريك"
   }
 ]
