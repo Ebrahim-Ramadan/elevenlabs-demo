@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import * as React from "react";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@11labs/react";
 import { cn } from "@/lib/utils";
@@ -46,6 +46,8 @@ export function ConvAI() {
   const [spokenPrice, setSpokenPrice] = useState<string | null>(null);
   const [recognizedItems, setRecognizedItems] = useState<{ name: string; quantity: number }[]>([]);
   const [hasSpokenTotal, setHasSpokenTotal] = useState(false);
+  const [showVideo, setShowVideo] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const conversation = useConversation({
     onConnect: () => {
@@ -53,6 +55,15 @@ export function ConvAI() {
     },
     onDisconnect: () => {
       console.log("disconnected");
+      setRecognizedItems([]);
+      setShowVideo(true);
+      setSpokenPrice(null);
+      setHasSpokenTotal(false);
+      // Optionally restart video
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play();
+      }
     },
     onError: error => {
       console.error(error);
@@ -124,6 +135,7 @@ export function ConvAI() {
         if (recognized.length > 0) {
           setRecognizedItems(recognized);
           setHasSpokenTotal(false); // Reset for new order
+          setShowVideo(false); // Hide video when order detected
           console.log("Order detected:", recognized);
         }
       }
@@ -196,9 +208,21 @@ export function ConvAI() {
   }, [conversation]);
 
   return (
-    <div className="flex flex-col items-center gap-y-8">
+    <div className="flex flex-col items-center gap-y-8 ">
+      {/* Initial Video */}
+      {showVideo && (
+        <video
+          ref={videoRef}
+          src="/large-thumbnail20250216-3097548-1djrrxq.mp4"
+          autoPlay
+          loop
+          muted
+          className="w-full md:w-3/4 max-w-lg rounded-3xl mb-24"
+        />
+      )}
+
       {/* Your Order (agent detected) */}
-      {recognizedItems.length > 0 && (
+      {!showVideo && recognizedItems.length > 0 && (
         <Card className="rounded-3xl w-full max-w-xl">
           <CardHeader>
             <CardTitle className="text-center">Your Order</CardTitle>
@@ -276,7 +300,7 @@ export function ConvAI() {
             {connecting ? (
               <Loader className="animate-spin w-6 h-auto text-neutral-500" />
             ) : null}
-            {conversation.status === "connected" && conversation.isSpeaking ? (
+            {conversation.status === "connected" ? (
               <XIcon className="w-6 h-auto text-red-900" />
             ) : null}
           </div>

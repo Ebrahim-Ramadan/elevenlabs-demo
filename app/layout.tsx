@@ -31,7 +31,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
                        className={"w-40 h-auto hover:text-gray-500 text-[#24292f]"}
                        />
                     </Link>
-                    <Link href="/inventory" className="flex gap-2 items-center justify-end text-blue-700 hover:text-blue-900 font-medium ">
+                    <Link href="/inventory" className="text-xs md:text-sm flex gap-2 items-center justify-end text-blue-700 hover:text-blue-900 font-medium ">
                         Inventory 
                         <ArrowRight className="w-5 h-5" />
                     </Link>
