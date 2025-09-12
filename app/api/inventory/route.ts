@@ -11,7 +11,7 @@ export async function GET() {
     try {
       // Select all items, show quantity_sold as "-quantity_sold"
       const result = await client.query(
-        `SELECT id, name, ('-' || quantity_sold::text) AS inventory FROM menu_items`
+        `SELECT id, name, ('-' || quantity_sold::text) AS inventory, last_purchased FROM menu_items`
       );
       return NextResponse.json({ items: result.rows });
     } finally {

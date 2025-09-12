@@ -18,14 +18,14 @@ export async function POST(req: Request) {
       for (const item of items) {
         console.log(`Updating quantity_sold for: ${item.name}, increment: ${item.quantity}`);
         const updateResult = await client.query(
-          'UPDATE menu_items SET quantity_sold = quantity_sold + $1 WHERE name = $2 RETURNING *',
+          'UPDATE menu_items SET quantity_sold = quantity_sold + $1, last_purchased = NOW() WHERE name = $2 RETURNING *',
           [item.quantity, item.name]
         );
         console.log('Update result:', updateResult.rows);
         if (updateResult.rowCount === 0) {
           // Item does not exist, insert new record
           const insertResult = await client.query(
-            'INSERT INTO menu_items (name, quantity_sold) VALUES ($1, $2) RETURNING *',
+            'INSERT INTO menu_items (name, quantity_sold, last_purchased) VALUES ($1, $2, NOW()) RETURNING *',
             [item.name, item.quantity]
           );
           console.log('Insert result:', insertResult.rows);
