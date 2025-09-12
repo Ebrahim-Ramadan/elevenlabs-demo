@@ -6,6 +6,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@11labs/react";
 import { cn } from "@/lib/utils";
+import { Loader, Loader2, XIcon } from "lucide-react"; // Add this at the top if you use lucide icons
 
 // Load menu from public folder
 async function fetchMenu() {
@@ -38,29 +39,8 @@ async function getSignedUrl(): Promise<string> {
 }
 
 export function ConvAI() {
-  // Test function to send order to backend
-  function testPlaceOrder() {
-    if (recognizedItems.length > 0) {
-      fetch('/api/place-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: recognizedItems }),
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            alert('Order placed and quantity_sold updated!');
-          } else {
-            alert('Order placement error: ' + data.error);
-          }
-        })
-        .catch(err => {
-          alert('Order placement failed: ' + err);
-        });
-    } else {
-      alert('No items to place order.');
-    }
-  }
+  const [connecting, setConnecting] = useState(false);
+
   const [menu, setMenu] = useState<{ name: string; price_kwd: string, arabic_name: string }[]>([]);
   // Remove manual order state, use only recognizedItems
   const [spokenPrice, setSpokenPrice] = useState<string | null>(null);
@@ -199,14 +179,16 @@ export function ConvAI() {
   }, [recognizedItems, menu]);
 
   async function startConversation() {
+    setConnecting(true);
     const hasPermission = await requestMicrophonePermission();
     if (!hasPermission) {
       alert("No permission to use microphone");
+      setConnecting(false);
       return;
     }
     const signedUrl = await getSignedUrl();
-    const conversationId = await conversation.startSession({ signedUrl });
-    console.log("Conversation started:", conversationId);
+    await conversation.startSession({ signedUrl });
+    setConnecting(false);
   }
 
   const stopConversation = useCallback(async () => {
@@ -215,22 +197,13 @@ export function ConvAI() {
 
   return (
     <div className="flex flex-col items-center gap-y-8">
-      {/* <Button
-        variant="outline"
-        className="mb-4"
-        onClick={testPlaceOrder}
-      >
-        Test Place Order
-      </Button> */}
       {/* Your Order (agent detected) */}
-      <Card className="rounded-3xl w-full max-w-xl">
-        <CardHeader>
-          <CardTitle className="text-center">Your Order</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {recognizedItems.length === 0 ? (
-            <div>No items detected.</div>
-          ) : (
+      {recognizedItems.length > 0 && (
+        <Card className="rounded-3xl w-full max-w-xl">
+          <CardHeader>
+            <CardTitle className="text-center">Your Order</CardTitle>
+          </CardHeader>
+          <CardContent>
             <ul className="flex flex-wrap gap-4 justify-center">
               {recognizedItems.map(item => {
                 const menuItem = menu.find(m => m.name === item.name);
@@ -248,14 +221,14 @@ export function ConvAI() {
                         {item.quantity}
                       </span>
                       <img
-                        src={imgSrcJpg}
+                        src={
+                          item.name === "Chicken Club"
+                            ? "/chicken club.jpeg"
+                            : item.name === "Peach Mango Iced Tea"
+                            ? "/Peach Mango Iced Tea.jpeg"
+                            : "/favicon.ico"
+                        }
                         alt={item.name}
-                        onError={e => {
-                          (e.target as HTMLImageElement).src = imgSrcPng;
-                          (e.target as HTMLImageElement).onerror = () => {
-                            (e.target as HTMLImageElement).src = "/favicon.ico";
-                          };
-                        }}
                         className="w-24 h-24 object-cover rounded-xl border"
                       />
                     </div>
@@ -267,126 +240,57 @@ export function ConvAI() {
                 );
               })}
             </ul>
-          )}
-          <div className="mt-4 font-bold text-lg text-center">
-            Total: {total.toFixed(3)} KWD
-          </div>
-        </CardContent>
-      </Card>
-
-
-      {/* Recognized Items from Agent (with images) */}
-      {recognizedItems.length > 0 && (
-        <Card className="rounded-3xl w-full max-w-xl bg-blue-50 border-blue-300">
-          <CardHeader>
-            <CardTitle className="text-center text-blue-700">
-              Agent Recognized Order
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="flex flex-wrap gap-4 justify-center">
-              {recognizedItems.map(item => {
-                const menuItem = menu.find(m => m.name === item.name);
-                // Try to get image src (assume jpg/png by slugifying name)
-                const slug = item.name.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-                const imgSrcJpg = `/` + slug + `.jpg`;
-                const imgSrcPng = `/` + slug + `.png`;
-                // Use jpg by default, fallback to png, fallback to placeholder
-                return (
-                  <li key={item.name} className="flex flex-col items-center w-32">
-                    <img
-                      src={imgSrcJpg}
-                      alt={item.name}
-                      onError={e => {
-                        (e.target as HTMLImageElement).src = imgSrcPng;
-                        (e.target as HTMLImageElement).onerror = () => {
-                          (e.target as HTMLImageElement).src = "/favicon.ico";
-                        };
-                      }}
-                      className="w-24 h-24 object-cover rounded-xl border mb-2"
-                    />
-                    <span className="font-semibold text-center">{item.name}</span>
-                    <span className="text-sm text-gray-600">x {item.quantity}</span>
-                    <span className="text-sm text-gray-800">
-                      {menuItem ? `${parseFloat(menuItem.price_kwd).toFixed(3)} KWD` : "-"}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
             <div className="mt-4 font-bold text-lg text-center">
-              Total: {
-                recognizedItems.reduce((sum, item) => {
-                  const menuItem = menu.find(m => m.name === item.name);
-                  return sum + (menuItem ? parseFloat(menuItem.price_kwd) * item.quantity : 0);
-                }, 0).toFixed(3)
-              } KWD
+              Total: {total.toFixed(3)} KWD
             </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Spoken Price from Agent */}
-      {spokenPrice && (
-        <Card className="rounded-3xl w-full max-w-xl bg-yellow-50 border-yellow-300">
-          <CardHeader>
-            <CardTitle className="text-center text-yellow-700">
-              Agent Quoted Price
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center font-bold text-xl">{spokenPrice}</div>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Conversation Orb */}
-      <Card className="rounded-3xl">
-        <CardContent>
-          <CardHeader>
-            <CardTitle className="text-center">
-              {conversation.status === "connected"
-                ? conversation.isSpeaking
-                  ? "Agent is speaking"
-                  : "Agent is listening"
-                : "Disconnected"}
-            </CardTitle>
-          </CardHeader>
-          <div className="flex flex-col gap-y-4 text-center">
-            <div
-              className={cn(
-                "orb my-16 mx-12",
-                conversation.status === "connected" && conversation.isSpeaking
-                  ? "orb-active animate-orb"
-                  : conversation.status === "connected"
-                  ? "animate-orb-slow orb-inactive"
-                  : "orb-inactive"
-              )}
-            ></div>
-
-            <Button
-              variant="outline"
-              className="rounded-full"
-              size="lg"
-              disabled={
-                conversation !== null && conversation.status === "connected"
+      <div className="rounded-3xl fixed bottom-8 left-0 right-0 mx-auto w-fit z-50">
+        <div className="flex flex-col gap-y-4 text-center">
+          <div
+            className={cn(
+              "orb my-4 mx-auto cursor-pointer transition-all",
+              conversation.status === "connected" && conversation.isSpeaking
+                ? "orb-active animate-orb"
+                : conversation.status === "connected"
+                ? "animate-orb-slow orb-inactive"
+                : "orb-inactive"
+            )}
+            style={{ width: 80, height: 80, display: "flex", alignItems: "center", justifyContent: "center" }}
+            onClick={() => {
+              if (conversation.status === "connected") {
+                stopConversation();
+              } else if (!connecting) {
+                startConversation();
               }
-              onClick={startConversation}
-            >
-              Start conversation
-            </Button>
-            <Button
-              variant="outline"
-              className="rounded-full"
-              size="lg"
-              disabled={conversation === null}
-              onClick={stopConversation}
-            >
-              End conversation
-            </Button>
+            }}
+            title={
+              conversation.status === "connected"
+                ? "End conversation"
+                : "Start conversation"
+            }
+          >
+            {connecting ? (
+              <Loader className="animate-spin w-6 h-auto text-neutral-500" />
+            ) : null}
+            {conversation.status === "connected" && conversation.isSpeaking ? (
+              <XIcon className="w-6 h-auto text-red-900" />
+            ) : null}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+        <p className="flex justify-center text-xs md:text-sm">
+          {connecting
+            ?   "..."
+            : conversation.status === "connected"
+            ? conversation.isSpeaking
+              ? "Agent is speaking"
+              : "Agent is listening"
+            : "Disconnected"}
+        </p>
+      </div>
     </div>
   );
 }
