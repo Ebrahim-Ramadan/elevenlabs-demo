@@ -6,7 +6,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@11labs/react";
 import { cn } from "@/lib/utils";
-import { Loader, Loader2, XIcon } from "lucide-react"; // Add this at the top if you use lucide icons
+import { Loader, Loader2, Square, XIcon } from "lucide-react"; // Add this at the top if you use lucide icons
 import { BackgroundWave } from "./background-wave";
 
 // Load menu from public folder
@@ -304,7 +304,7 @@ export function ConvAI() {
               <Loader className="animate-spin w-6 h-auto text-neutral-500" />
             ) : null}
             {conversation.status === "connected" ? (
-              <XIcon className="w-6 h-auto text-red-900" />
+              <Square className="w-6 h-auto text-neutral-900" />
             ) : null}
           </div>
         </div>
