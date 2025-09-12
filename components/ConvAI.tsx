@@ -226,12 +226,11 @@ export function ConvAI() {
       
 
       {/* Your Order (agent detected) */}
-      {!showVideo && recognizedItems.length > 0 && (
-        <Card className="rounded-3xl w-full max-w-xl">
-          <CardHeader>
-            <CardTitle className="text-center">Your Order</CardTitle>
-          </CardHeader>
-          <CardContent>
+      {showVideo && recognizedItems.length <= 0 && (
+        <div className="rounded-3xl w-full max-w-xl">
+                     <p className="text-center">Your Order</p>
+
+          <div>
             <ul className="flex flex-wrap gap-4 justify-center">
               {recognizedItems.map(item => {
                 const menuItem = menu.find(m => m.name === item.name);
@@ -271,8 +270,8 @@ export function ConvAI() {
             <div className="mt-4 font-bold text-lg text-center">
               Total: {total.toFixed(3)} KWD
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* Conversation Orb */}
