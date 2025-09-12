@@ -1,13 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import * as React from "react";
 import { useState, useCallback, useEffect, useRef } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useConversation } from "@11labs/react";
 import { cn } from "@/lib/utils";
-import { Loader, Loader2, Square, XIcon } from "lucide-react"; // Add this at the top if you use lucide icons
-import { BackgroundWave } from "./background-wave";
+import { Loader,  Square } from "lucide-react"; // Add this at the top if you use lucide icons
+import { motion, AnimatePresence } from "framer-motion";
 
 // Load menu from public folder
 async function fetchMenu() {
@@ -107,27 +105,48 @@ export function ConvAI() {
       // Smart extraction: always scan for menu items in every agent message
       if (menu.length > 0 && message.message) {
         const recognized: { name: string; quantity: number }[] = [];
+        const msg = message.message.replace(/[.,،؟!]/g, " "); // Remove punctuation for better matching
+
+        // Helper: extract all numbers (Arabic, English) and common "two" words
+        function extractAllQty(str: string) {
+          // English digits
+          const digitMatches = str.match(/\d+/g) || [];
+          // Arabic digits
+          const arabicDigitMatches = str.match(/[\u0660-\u0669]+/g) || [];
+          // Common Arabic words for "two"
+          const twoWords = [
+  "اتنين", "اثنين", "اثنان", "ثنين", "تنين",
+  "تنين", "اتنينه", "اثنينه", "اثنينات", "ثنينات",
+  "اثنينات", "اتنينات", "اتنينات", "اتنينين", "اثنينين",
+  "اتنين يا", "اثنين يا", "ثنين يا", "تنين يا"
+];
+          const twoWordMatches = twoWords.filter(w => str.includes(w));
+          let qty = 0;
+          digitMatches.forEach(d => qty += parseInt(d));
+          arabicDigitMatches.forEach(d => {
+            // Convert Arabic-Indic digits to English
+            const converted = d.replace(/[\u0660-\u0669]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x0660 + 48));
+            qty += parseInt(converted);
+          });
+          qty += twoWordMatches.length * 2;
+          return qty;
+        }
+
         menu.forEach(item => {
           const patterns = [item.name, item.arabic_name].filter(Boolean);
           patterns.forEach(pattern => {
-            // Match phrases like "2 Chicken Club", "Chicken Club 2", "أربع Chicken Club", "Chicken Club أربع"
-            const regex = new RegExp(
-              `(?:([\\d\u0660-\u0669]+)\\s*)?${pattern.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}(?:\\s*([\\d\u0660-\u0669]+))?`,
-              "gi"
-            );
-            let match;
-            let totalQty = 0;
-            while ((match = regex.exec(message.message)) !== null) {
-              // Prefer quantity before, else after, else default to 1
-              let qty = 1;
-              if (match[1]) qty = parseInt(match[1].replace(/[\u0660-\u0669]/g, d => String.fromCharCode(d.charCodeAt(0) - 0x0660 + 48)));
-              else if (match[2]) qty = parseInt(match[2].replace(/[\u0660-\u0669]/g, d => String.fromCharCode(d.charCodeAt(0) - 0x0660 + 48)));
-              totalQty += isNaN(qty) ? 1 : qty;
-            }
-            if (totalQty > 0) {
-              // Avoid duplicates
+            // Flexible word overlap matching
+            const itemWords = pattern.split(/\s+/).filter(w => w.length > 2);
+            const msgWords = msg.split(/\s+/).filter(w => w.length > 2);
+            const matchCount = itemWords.filter(w =>
+              msgWords.some(mw => mw.includes(w) || w.includes(mw))
+            ).length;
+            if (itemWords.length > 0 && matchCount / itemWords.length >= 0.66) {
+              // Extract all quantities from the message
+              let qty = extractAllQty(msg);
+              if (qty === 0) qty = 1; // Default to 1 if nothing found
               if (!recognized.some(r => r.name === item.name)) {
-                recognized.push({ name: item.name, quantity: totalQty });
+                recognized.push({ name: item.name, quantity: qty });
               }
             }
           });
@@ -210,76 +229,81 @@ export function ConvAI() {
 
   return (
     <>
-    {showVideo && (
-        <video
-          ref={videoRef}
-          src="/large-thumbnail20250216-3097548-1djrrxq.mp4"
-          autoPlay
-          loop
-          muted
-          className="fixed top-0 left-0 w-full h-5/6 rounded-3xl mb-24 object-contain -z-10"
-          style={{ pointerEvents: "none" }}
-        />
-      )}
-    <div className="flex flex-col items-center gap-y-8 w-full h-full">
-      {/* Initial Video */}
-      
-
-      {/* Your Order (agent detected) */}
-      {showVideo && recognizedItems.length <= 0 && (
-        <div className="rounded-3xl w-full max-w-xl">
-                     <p className="text-center">Your Order</p>
-
-          <div>
-            <ul className="flex flex-wrap gap-4 justify-center">
-              {recognizedItems.map(item => {
-                const menuItem = menu.find(m => m.name === item.name);
-                const slug = item.name.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
-                const imgSrcJpg = `/` + slug + `.jpg`;
-                const imgSrcPng = `/` + slug + `.png`;
-                return (
-                  <li key={item.name} className="flex flex-col items-center w-32 relative">
-                    <div className="relative w-24 h-24 mb-2">
-                      {/* Quantity badge */}
-                      <span
-                        className="absolute -top-2 -left-2 bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-sm shadow"
-                        style={{ zIndex: 2 }}
-                      >
-                        {item.quantity}
-                      </span>
-                      <img
-                        src={
-                          item.name === "Chicken Club"
-                            ? "/chicken club.jpeg"
-                            : item.name === "Peach Mango Iced Tea"
-                            ? "/Peach Mango Iced Tea.jpeg"
-                            : "/favicon.ico"
-                        }
-                        alt={item.name}
-                        className="w-24 h-24 object-cover rounded-xl border"
-                      />
-                    </div>
-                    <span className="font-semibold text-center">{item.name}</span>
-                    <span className="text-sm text-gray-800">
-                      {menuItem ? `${parseFloat(menuItem.price_kwd).toFixed(3)} KWD` : "-"}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="mt-4 font-bold text-lg text-center">
-              Total: {total.toFixed(3)} KWD
-            </div>
-          </div>
-        </div>
-      )}
+   <AnimatePresence>
+        {showVideo && (
+          <motion.video
+            key="video"
+            ref={videoRef}
+            src="/large-thumbnail20250216-3097548-1djrrxq.mp4"
+            autoPlay
+            loop
+            muted
+            className="fixed top-0 left-0 w-full h-5/6 rounded-3xl mb-24 object-contain -z-10"
+            style={{ pointerEvents: "none" }}
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.6 } }}
+          />
+        )}
+      </AnimatePresence>
+      <div className="flex flex-col items-center gap-y-8 w-full h-full relative z-10">
+        <AnimatePresence>
+          {!showVideo && recognizedItems.length > 0 && (
+            <motion.div
+              key="order"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40, transition: { duration: 0.6 } }}
+              className="rounded-3xl w-full max-w-xl"
+            >
+              <p className="text-center">Your Order</p>
+              <div>
+                <ul className="flex flex-wrap gap-4 justify-center">
+                  {recognizedItems.map(item => {
+                    const menuItem = menu.find(m => m.name === item.name);
+                    return (
+                      <li key={item.name} className="flex flex-col items-center w-32 relative">
+                        <div className="relative w-24 h-24 mb-2">
+                          <span
+                            className="absolute -top-2 -left-2 bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-sm shadow"
+                            style={{ zIndex: 2 }}
+                          >
+                            {item.quantity}
+                          </span>
+                          <img
+                            src={
+                              item.name === "Chicken Club"
+                                ? "/chicken club.jpeg"
+                                : item.name === "Peach Mango Iced Tea"
+                                ? "/Peach Mango Iced Tea.jpeg"
+                                : "/favicon.ico"
+                            }
+                            alt={item.name}
+                            className="w-24 h-24 object-cover rounded-xl border"
+                          />
+                        </div>
+                        <span className="font-semibold text-center">{item.name}</span>
+                        <span className="text-sm text-gray-800">
+                          {menuItem ? `${parseFloat(menuItem.price_kwd).toFixed(3)} KWD` : "-"}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="mt-4 font-bold text-lg text-center">
+                  Total: {total.toFixed(3)} KWD
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       {/* Conversation Orb */}
       <div className="rounded-3xl fixed bottom-4 left-0 right-0 mx-auto w-fit z-50">
         <div className="flex flex-col gap-y-4 text-center">
           <div
             className={cn(
-              "orb my-4 mx-auto cursor-pointer transition-all",
+              "group orb my-4 mx-auto cursor-pointer transition-all",
               conversation.status === "connected" && conversation.isSpeaking
                 ? "orb-active animate-orb"
                 : conversation.status === "connected"
@@ -304,7 +328,7 @@ export function ConvAI() {
               <Loader className="animate-spin w-6 h-auto text-neutral-500" />
             ) : null}
             {conversation.status === "connected" ? (
-              <Square className="w-6 h-auto text-neutral-900" />
+              <Square className="w-6 h-auto text-neutral-600 transition-all duration-300 group-hover:text-neutral-900" fill="currentColor" />
             ) : null}
           </div>
         </div>
