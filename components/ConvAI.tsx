@@ -37,10 +37,34 @@ async function getSignedUrl(): Promise<string> {
 }
 
 export function ConvAI() {
+  // Test function to send order to backend
+  function testPlaceOrder() {
+    if (recognizedItems.length > 0) {
+      fetch('/api/place-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: recognizedItems }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert('Order placed and quantity_sold updated!');
+          } else {
+            alert('Order placement error: ' + data.error);
+          }
+        })
+        .catch(err => {
+          alert('Order placement failed: ' + err);
+        });
+    } else {
+      alert('No items to place order.');
+    }
+  }
   const [menu, setMenu] = useState<{ name: string; price_kwd: string }[]>([]);
   // Remove manual order state, use only recognizedItems
   const [spokenPrice, setSpokenPrice] = useState<string | null>(null);
   const [recognizedItems, setRecognizedItems] = useState<{ name: string; quantity: number }[]>([]);
+  const [hasSpokenTotal, setHasSpokenTotal] = useState(false);
 
   const conversation = useConversation({
     onConnect: () => {
@@ -62,7 +86,7 @@ export function ConvAI() {
         setSpokenPrice(`${parseFloat(priceMatch[1]).toFixed(3)} KWD`);
       }
 
-      // Recognize ordered items from message text
+      // Recognize ordered items from message text (dynamic, multi-item)
       if (menu.length > 0 && message.message) {
         const recognized: { name: string; quantity: number }[] = [];
         menu.forEach(item => {
@@ -80,7 +104,7 @@ export function ConvAI() {
           const triggers = ["تبي", "رح أضيف", "أضيف لك", "أضيف" ];
           triggers.forEach(trigger => {
             // e.g., "تبي Americano" or "رح أضيف Americano"
-            const triggerRegex = new RegExp(`${trigger}\s*([\u0600-\u06FFa-zA-Z0-9 _-]*)`, "gi");
+            const triggerRegex = new RegExp(`${trigger}\\s*([\\u0600-\\u06FFa-zA-Z0-9 _-]*)`, "gi");
             let match;
             while ((match = triggerRegex.exec(message.message)) !== null) {
               // See if the item name appears after the trigger
@@ -98,13 +122,19 @@ export function ConvAI() {
         });
         if (recognized.length > 0) {
           setRecognizedItems(recognized);
+          setHasSpokenTotal(false); // Reset for new order
           console.log("Order detected:", recognized);
         }
       }
 
-      // Speak total price if agent says 'خليني احسبلك المجموع' or 'المجموع'
-      if (message.message && (/خليني احسبلك المجموع|المجموع/.test(message.message))) {
-        // Wait 4-6 seconds before speaking
+      // Speak total price if agent says 'خليني احسبلك المجموع' or 'المجموع' (only first time)
+      if (
+        message.message &&
+        (/خليني احسبلك المجموع|المجموع/.test(message.message)) &&
+        !hasSpokenTotal &&
+        recognizedItems.length > 0
+      ) {
+        setHasSpokenTotal(true);
         setTimeout(() => {
           const totalPrice = recognizedItems.reduce((sum, item) => {
             const menuItem = menu.find(m => m.name === item.name);
@@ -112,6 +142,24 @@ export function ConvAI() {
           }, 0);
           const utter = new window.SpeechSynthesisUtterance(`المجموع ${totalPrice.toFixed(3)} كويت دينار`);
           window.speechSynthesis.speak(utter);
+
+          // Send order to backend
+          fetch('/api/place-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: recognizedItems }),
+          })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                console.log('Order placed and quantity_sold updated!');
+              } else {
+                console.error('Order placement error:', data.error);
+              }
+            })
+            .catch(err => {
+              console.error('Order placement failed:', err);
+            });
         }, 4000 + Math.floor(Math.random() * 2000)); // 4-6 seconds
       }
     },
@@ -146,6 +194,13 @@ export function ConvAI() {
 
   return (
     <div className="flex flex-col items-center gap-y-8">
+      {/* <Button
+        variant="outline"
+        className="mb-4"
+        onClick={testPlaceOrder}
+      >
+        Test Place Order
+      </Button> */}
       {/* Your Order (agent detected) */}
       <Card className="rounded-3xl w-full max-w-xl">
         <CardHeader>

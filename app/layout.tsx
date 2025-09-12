@@ -4,6 +4,7 @@ import {BackgroundWave} from "@/components/background-wave";
 import Link from "next/link";
 import { GithubLogo} from "@/components/logos";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
     title: "ConvAI",
@@ -19,9 +20,9 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
                     "sm:fixed w-full top-0 left-0 grid grid-cols-2 py-4 px-8"
                 }
             >
-                <div className={"flex"}>
-                    <Link href={"/"} prefetch={true}>
+                 <Link href={"/"} prefetch={true}>
                        <Image 
+                       priority={false}
                        unoptimized
                        src="/logo.svg"
                        alt="Caribou Logo"
@@ -30,8 +31,10 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
                        className={"w-40 h-auto hover:text-gray-500 text-[#24292f]"}
                        />
                     </Link>
-                </div>
-
+                    <Link href="/inventory" className="flex gap-2 items-center justify-end text-blue-700 hover:text-blue-900 font-medium">
+                        Inventory 
+                        <ArrowRight className="w-5 h-5" />
+                    </Link>
                 {/* <div className={"flex gap-4 justify-end"}>
                     <Link
                         href="https://github.com/jonatanvm/convai-demo"
