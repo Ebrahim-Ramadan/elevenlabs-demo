@@ -38,9 +38,9 @@ async function getSignedUrl(): Promise<string> {
 
 export function ConvAI() {
   const [menu, setMenu] = useState<{ name: string; price_kwd: string }[]>([]);
-  const [order, setOrder] = useState<{ name: string; quantity: number }[]>([]);
-  const [total, setTotal] = useState(0);
-  const [spokenPrice, setSpokenPrice] = useState<string | null>(null); // 👈 new state
+  // Remove manual order state, use only recognizedItems
+  const [spokenPrice, setSpokenPrice] = useState<string | null>(null);
+  const [recognizedItems, setRecognizedItems] = useState<{ name: string; quantity: number }[]>([]);
 
   const conversation = useConversation({
     onConnect: () => {
@@ -57,9 +57,49 @@ export function ConvAI() {
       console.log("Agent message:", message);
 
       // Extract price like "1.250 KWD"
-      const priceMatch = message.text?.match(/(\d+(\.\d{1,3})?)\s?KWD/i);
+      const priceMatch = message.message?.match(/(\d+(\.\d{1,3})?)\s?KWD/i);
       if (priceMatch) {
         setSpokenPrice(`${parseFloat(priceMatch[1]).toFixed(3)} KWD`);
+      }
+
+      // Recognize ordered items from message text
+      if (menu.length > 0 && message.message) {
+        const recognized: { name: string; quantity: number }[] = [];
+        menu.forEach(item => {
+          // Simple match: look for item name in message text
+          const regex = new RegExp(`\\b${item.name.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}\\b`, "gi");
+          const matches = message.message.match(regex);
+          if (matches) {
+            // Check for quantity (e.g., "2 Americano")
+            const qtyMatch = message.message.match(new RegExp(`(\\d+)\\s*${item.name.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}`, "i"));
+            const quantity = qtyMatch ? parseInt(qtyMatch[1]) : matches.length;
+            recognized.push({ name: item.name, quantity });
+          }
+
+          // Enhanced: detect item after trigger phrases (Arabic)
+          const triggers = ["تبي", "رح أضيف", "أضيف لك", "أضيف" ];
+          triggers.forEach(trigger => {
+            // e.g., "تبي Americano" or "رح أضيف Americano"
+            const triggerRegex = new RegExp(`${trigger}\s*([\u0600-\u06FFa-zA-Z0-9 _-]*)`, "gi");
+            let match;
+            while ((match = triggerRegex.exec(message.message)) !== null) {
+              // See if the item name appears after the trigger
+              if (match[1] && match[1].includes(item.name)) {
+                // Check for quantity before item name
+                const qtyMatch = match[1].match(new RegExp(`(\\d+)\\s*${item.name.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}`, "i"));
+                const quantity = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+                // Avoid duplicates
+                if (!recognized.some(r => r.name === item.name)) {
+                  recognized.push({ name: item.name, quantity });
+                }
+              }
+            }
+          });
+        });
+        if (recognized.length > 0) {
+          setRecognizedItems(recognized);
+          console.log("Order detected:", recognized);
+        }
       }
     },
   });
@@ -68,39 +108,13 @@ export function ConvAI() {
     fetchMenu().then(setMenu);
   }, []);
 
-  // Calculate total whenever order changes
-  useEffect(() => {
-    let sum = 0;
-    for (const item of order) {
+  // Calculate total whenever recognizedItems changes
+  const total = React.useMemo(() => {
+    return recognizedItems.reduce((sum, item) => {
       const menuItem = menu.find(m => m.name === item.name);
-      if (menuItem) {
-        sum += parseFloat(menuItem.price_kwd) * item.quantity;
-      }
-    }
-    setTotal(sum);
-  }, [order, menu]);
-
-  const addToOrder = (name: string) => {
-    setOrder(prev => {
-      const existing = prev.find(i => i.name === name);
-      if (existing) {
-        return prev.map(i =>
-          i.name === name ? { ...i, quantity: i.quantity + 1 } : i
-        );
-      }
-      return [...prev, { name, quantity: 1 }];
-    });
-  };
-
-  const removeFromOrder = (name: string) => {
-    setOrder(prev =>
-      prev
-        .map(i =>
-          i.name === name ? { ...i, quantity: i.quantity - 1 } : i
-        )
-        .filter(i => i.quantity > 0)
-    );
-  };
+      return sum + (menuItem ? parseFloat(menuItem.price_kwd) * item.quantity : 0);
+    }, 0);
+  }, [recognizedItems, menu]);
 
   async function startConversation() {
     const hasPermission = await requestMicrophonePermission();
@@ -119,59 +133,101 @@ export function ConvAI() {
 
   return (
     <div className="flex flex-col items-center gap-y-8">
-      {/* Menu */}
-      <Card className="rounded-3xl w-full max-w-xl">
-        <CardHeader>
-          <CardTitle className="text-center">Caribou Coffee Menu</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul>
-            {menu.map(item => (
-              <li
-                key={item.name}
-                className="flex justify-between items-center py-2"
-              >
-                <span>{item.name}</span>
-                <span>{parseFloat(item.price_kwd).toFixed(3)} KWD</span>
-                <Button size="sm" onClick={() => addToOrder(item.name)}>
-                  Add
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
-
-      {/* Order */}
+      {/* Your Order (agent detected) */}
       <Card className="rounded-3xl w-full max-w-xl">
         <CardHeader>
           <CardTitle className="text-center">Your Order</CardTitle>
         </CardHeader>
         <CardContent>
-          {order.length === 0 ? (
-            <div>No items selected.</div>
+          {recognizedItems.length === 0 ? (
+            <div>No items detected.</div>
           ) : (
-            <ul>
-              {order.map(item => (
-                <li
-                  key={item.name}
-                  className="flex justify-between items-center py-2"
-                >
-                  <span>
-                    {item.name} x {item.quantity}
-                  </span>
-                  <Button size="sm" onClick={() => removeFromOrder(item.name)}>
-                    Remove
-                  </Button>
-                </li>
-              ))}
+            <ul className="flex flex-wrap gap-4 justify-center">
+              {recognizedItems.map(item => {
+                const menuItem = menu.find(m => m.name === item.name);
+                const slug = item.name.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                const imgSrcJpg = `/` + slug + `.jpg`;
+                const imgSrcPng = `/` + slug + `.png`;
+                return (
+                  <li key={item.name} className="flex flex-col items-center w-32">
+                    <img
+                      src={imgSrcJpg}
+                      alt={item.name}
+                      onError={e => {
+                        (e.target as HTMLImageElement).src = imgSrcPng;
+                        (e.target as HTMLImageElement).onerror = () => {
+                          (e.target as HTMLImageElement).src = "/favicon.ico";
+                        };
+                      }}
+                      className="w-24 h-24 object-cover rounded-xl border mb-2"
+                    />
+                    <span className="font-semibold text-center">{item.name}</span>
+                    <span className="text-sm text-gray-600">x {item.quantity}</span>
+                    <span className="text-sm text-gray-800">
+                      {menuItem ? `${parseFloat(menuItem.price_kwd).toFixed(3)} KWD` : "-"}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           )}
-          <div className="mt-4 font-bold text-lg">
+          <div className="mt-4 font-bold text-lg text-center">
             Total: {total.toFixed(3)} KWD
           </div>
         </CardContent>
       </Card>
+
+
+      {/* Recognized Items from Agent (with images) */}
+      {recognizedItems.length > 0 && (
+        <Card className="rounded-3xl w-full max-w-xl bg-blue-50 border-blue-300">
+          <CardHeader>
+            <CardTitle className="text-center text-blue-700">
+              Agent Recognized Order
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="flex flex-wrap gap-4 justify-center">
+              {recognizedItems.map(item => {
+                const menuItem = menu.find(m => m.name === item.name);
+                // Try to get image src (assume jpg/png by slugifying name)
+                const slug = item.name.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
+                const imgSrcJpg = `/` + slug + `.jpg`;
+                const imgSrcPng = `/` + slug + `.png`;
+                // Use jpg by default, fallback to png, fallback to placeholder
+                return (
+                  <li key={item.name} className="flex flex-col items-center w-32">
+                    <img
+                      src={imgSrcJpg}
+                      alt={item.name}
+                      onError={e => {
+                        (e.target as HTMLImageElement).src = imgSrcPng;
+                        (e.target as HTMLImageElement).onerror = () => {
+                          (e.target as HTMLImageElement).src = "/favicon.ico";
+                        };
+                      }}
+                      className="w-24 h-24 object-cover rounded-xl border mb-2"
+                    />
+                    <span className="font-semibold text-center">{item.name}</span>
+                    <span className="text-sm text-gray-600">x {item.quantity}</span>
+                    <span className="text-sm text-gray-800">
+                      {menuItem ? `${parseFloat(menuItem.price_kwd).toFixed(3)} KWD` : "-"}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="mt-4 font-bold text-lg text-center">
+              Total: {
+                recognizedItems.reduce((sum, item) => {
+                  const menuItem = menu.find(m => m.name === item.name);
+                  return sum + (menuItem ? parseFloat(menuItem.price_kwd) * item.quantity : 0);
+                }, 0).toFixed(3)
+              } KWD
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Spoken Price from Agent */}
       {spokenPrice && (
