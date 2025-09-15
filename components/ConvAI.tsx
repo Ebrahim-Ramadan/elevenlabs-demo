@@ -299,7 +299,7 @@ if (recognized.length > 0) {
   return (
     <>
    <AnimatePresence>
-        {/* {showVideo && (
+        {showVideo && (
           <motion.video
             key="video"
             ref={videoRef}
@@ -313,12 +313,12 @@ if (recognized.length > 0) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.6 } }}
           />
-        )} */}
+        )}
       </AnimatePresence>
       <div className="flex flex-col items-center gap-y-8 w-full h-full relative z-10">
         <AnimatePresence>
           {
-          // !showVideo && 
+          !showVideo && 
           recognizedItems.length > 0
            && (
             <motion.div
