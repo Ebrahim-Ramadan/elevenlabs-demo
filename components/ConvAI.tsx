@@ -287,6 +287,8 @@ export function ConvAI() {
                                 ? "/chicken club.jpeg"
                                 : item.name === "Peach Mango Iced Tea"
                                 ? "/Peach Mango Iced Tea.jpeg"
+                                : item.name === "Strawberry Pineapple Iced Tea"
+                                ? "/Strawberry Pineapple Iced Tea.webp"
                                 : "/favicon.ico"
                             }
                             alt={item.name}
