@@ -72,145 +72,196 @@ export function ConvAI() {
     },
     onMessage: message => {
       console.log("Agent message:", message);
+      // Check if the message is from the user or agent
+      if (message.source === "user") {
+        console.log("User message:", message.message);
+        // Handle user message (e.g., display in UI or log differently)
 
-      // Extract price like "1.250 KWD"
-      const priceMatch = message.message?.match(/(\d+(\.\d{1,3})?)\s?KWD/i);
-      if (priceMatch) {
-        setSpokenPrice(`${parseFloat(priceMatch[1]).toFixed(3)} KWD`);
-      }
-
-      // Arabic numbers and words mapping
-      const arabicNumbers: Record<string, number> = {
-        "واحد": 1, "١": 1,
-        "اثنين": 2, "٢": 2,
-        "ثلاثة": 3, "٣": 3,
-        "أربعة": 4, "٤": 4,
-        "خمسة": 5, "٥": 5,
-        "ستة": 6, "٦": 6,
-        "سبعة": 7, "٧": 7,
-        "ثمانية": 8, "٨": 8,
-        "تسعة": 9, "٩": 9,
-        "عشرة": 10, "١٠": 10,
-      };
-
-      if (menu.length > 0 && message.message) {
-        const recognized: { name: string; quantity: number }[] = [];
-        const msg = message.message.replace(/[.,،؟!]/g, " ");
-
-        // Helper: extract quantity from message
-        function extractQty(str: string) {
-          const digitMatch = str.match(/\d+/);
-          const arabicDigitMatch = str.match(/[\u0660-\u0669]+/);
-          const twoWords = [
-            "اتنين", "اثنين", "اثنان", "ثنين", "تنين",
-            "اتنينه", "اثنينه", "اثنينات", "ثنينات",
-            "اثنينات", "اتنينات", "اتنينات", "اتنينين", "اثنينين",
-            "اتنين يا", "اثنين يا", "ثنين يا", "تنين يا"
-          ];
-          let qty = 0;
-          if (digitMatch) qty += parseInt(digitMatch[0]);
-          if (arabicDigitMatch) {
-            const converted = arabicDigitMatch[0].replace(/[\u0660-\u0669]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x0660 + 48));
-            qty += parseInt(converted);
-          }
-          twoWords.forEach(w => {
-            if (str.includes(w)) qty += 2;
-          });
-          return qty;
+        // Run order detection, quantity extraction, etc. here
+        // Extract price like "1.250 KWD"
+        const priceMatch = message.message?.match(/(\d+(\.\d{1,3})?)\s?KWD/i);
+        if (priceMatch) {
+          setSpokenPrice(`${parseFloat(priceMatch[1]).toFixed(3)} KWD`);
         }
 
-        // Check if message is just a quantity update (e.g. "خليهم اتنين")
-        const isQtyUpdate = /(خليهم|خليها|خليه|خلي|خليهم يكونوا|خليهم يبقوا|يبقى|يكونوا)\s*(\d+|[\u0660-\u0669]+|اتنين|اثنين|اثنان|ثنين|تنين)/.test(msg);
+        // Arabic numbers and words mapping
+        const arabicNumbers: Record<string, number> = {
+          "واحد": 1, "١": 1,
+          "اثنين": 2, "٢": 2,
+          "ثلاثة": 3, "٣": 3,
+          "أربعة": 4, "٤": 4,
+          "خمسة": 5, "٥": 5,
+          "ستة": 6, "٦": 6,
+          "سبعة": 7, "٧": 7,
+          "ثمانية": 8, "٨": 8,
+          "تسعة": 9, "٩": 9,
+          "عشرة": 10, "١٠": 10,
+        };
 
-        if (isQtyUpdate && recognizedItems.length > 0) {
-          // Update last item's quantity
-          const qty = extractQty(msg);
-          if (qty > 0) {
-            const updated = [...recognizedItems];
-            updated[updated.length - 1].quantity = qty;
-            setRecognizedItems(updated);
-            setHasSpokenTotal(false);
-            setShowVideo(false);
-            console.log("Order updated:", updated);
-            return;
-          }
-        }
+        if (menu.length > 0 && message.message) {
+          const recognized: { name: string; quantity: number }[] = [];
+          const msg = message.message.replace(/[.,،؟!]/g, " ");
 
-        // Flexible word overlap matching for menu items
-        menu.forEach(item => {
-          const patterns = [item.name, item.arabic_name].filter(Boolean);
-          patterns.forEach(pattern => {
-            const itemWords = pattern.split(/\s+/).filter(w => w.length > 1);
-            const msgWords = msg.split(/\s+/).filter(w => w.length > 1);
-            const matchCount = itemWords.filter(w =>
-              msgWords.some(mw => mw.includes(w) || w.includes(mw))
-            ).length;
-            // If at least 2/3 of the words match, consider it a match
-            if (itemWords.length > 0 && matchCount / itemWords.length >= 0.66) {
-              let qty = extractQty(msg);
-              if (qty === 0) qty = 1;
-              if (!recognized.some(r => r.name === item.name)) {
-                recognized.push({ name: item.name, quantity: qty });
-              }
+          // Helper: extract quantity from message
+          function extractQty(str: string) {
+            const digitMatch = str.match(/\d+/);
+            const arabicDigitMatch = str.match(/[\u0660-\u0669]+/);
+            const twoWords = [
+              "اتنين", "اثنين", "اثنان", "ثنين", "تنين",
+              "اتنينه", "اثنينه", "اثنينات", "ثنينات",
+              "اثنينات", "اتنينات", "اتنينات", "اتنينين", "اثنينين",
+              "اتنين يا", "اثنين يا", "ثنين يا", "تنين يا"
+            ];
+            let qty = 0;
+            if (digitMatch) qty += parseInt(digitMatch[0]);
+            if (arabicDigitMatch) {
+              const converted = arabicDigitMatch[0].replace(/[\u0660-\u0669]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x0660 + 48));
+              qty += parseInt(converted);
             }
-          });
-        });
+            twoWords.forEach(w => {
+              if (str.includes(w)) qty += 2;
+            });
+            return qty;
+          }
 
-        // Prefer best match if multiple
-        if (recognized.length > 1) {
-          recognized.sort((a, b) => {
-            const aWords = a.name.toLowerCase().split(/\s+/);
-            const bWords = b.name.toLowerCase().split(/\s+/);
-            const msgWords = msg.toLowerCase().split(/\s+/);
-            const aOverlap = aWords.filter(w => msgWords.includes(w)).length;
-            const bOverlap = bWords.filter(w => msgWords.includes(w)).length;
-            return bOverlap - aOverlap;
-          });
-          recognized.splice(1);
-        }
+          // Check if message is just a quantity update (e.g. "خليهم اتنين")
+          const isQtyUpdate = /(خليهم|خليها|خليه|خلي|خليهم يكونوا|خليهم يبقوا|يبقى|يكونوا)\s*(\d+|[\u0660-\u0669]+|اتنين|اثنين|اثنان|ثنين|تنين)/.test(msg);
 
-        if (recognized.length > 0) {
-          setRecognizedItems(recognized);
-          setHasSpokenTotal(false);
-          setShowVideo(false);
-          console.log("Order detected:", recognized);
-        }
+          if (isQtyUpdate && recognizedItems.length > 0) {
+            // Update last item's quantity
+            const qty = extractQty(msg);
+            if (qty > 0) {
+              const updated = [...recognizedItems];
+              updated[updated.length - 1].quantity = qty;
+              setRecognizedItems(updated);
+              setHasSpokenTotal(false);
+              setShowVideo(false);
+              console.log("Order updated:", updated);
+              return;
+            }
+          }
+// ...inside onMessage...
+menu.forEach(item => {
+  const patterns = [item.name, item.arabic_name].filter(Boolean);
+  patterns.forEach(pattern => {
+    const itemWords = pattern.split(/\s+/).filter(w => w.length > 1);
+    const msgWords = msg.split(/\s+/).filter(w => w.length > 1);
+
+    // Find the best match index in the message
+    const matchIndex = msgWords.findIndex(mw =>
+      itemWords.some(iw => mw.includes(iw) || iw.includes(mw))
+    );
+    if (matchIndex !== -1) {
+      // Look for quantity ONLY in the 2 words before the match
+      let qty = 1;
+      const contextBefore = msgWords.slice(Math.max(0, matchIndex - 2), matchIndex).join(" ");
+      const contextAfter = msgWords.slice(matchIndex + 1, matchIndex + 3).join(" ");
+      const digitMatchBefore = contextBefore.match(/\d+/);
+      const digitMatchAfter = contextAfter.match(/\d+/);
+      const arabicDigitMatchBefore = contextBefore.match(/[\u0660-\u0669]+/);
+      const arabicDigitMatchAfter = contextAfter.match(/[\u0660-\u0669]+/);
+      const twoWords = [
+        "اتنين", "اثنين", "اثنان", "ثنين", "تنين",
+        "اتنينه", "اثنينه", "اثنينات", "ثنينات",
+        "اثنينات", "اتنينات", "اتنينات", "اتنينين", "اثنينين",
+        "اتنين يا", "اثنين يا", "ثنين يا", "تنين يا"
+      ];
+
+      // Priority: before > after > default
+      if (digitMatchBefore) qty = parseInt(digitMatchBefore[0]);
+      else if (arabicDigitMatchBefore) {
+        const converted = arabicDigitMatchBefore[0].replace(/[\u0660-\u0669]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x0660 + 48));
+        qty = parseInt(converted);
+      } else if (twoWords.some(w => contextBefore.includes(w))) {
+        qty = 2;
+      } else if (digitMatchAfter) qty = parseInt(digitMatchAfter[0]);
+      else if (arabicDigitMatchAfter) {
+        const converted = arabicDigitMatchAfter[0].replace(/[\u0660-\u0669]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x0660 + 48));
+        qty = parseInt(converted);
+      } else if (twoWords.some(w => contextAfter.includes(w))) {
+        qty = 2;
       }
 
-      // Speak total price if agent says 'خليني احسبلك المجموع' or 'المجموع' (only first time)
-      if (
-        message.message &&
-        (/خليني احسبلك المجموع|المجموع/.test(message.message)) &&
-        !hasSpokenTotal &&
-        recognizedItems.length > 0
-      ) {
-        setHasSpokenTotal(true);
-        setTimeout(() => {
-          const totalPrice = recognizedItems.reduce((sum, item) => {
-            const menuItem = menu.find(m => m.name === item.name);
-            return sum + (menuItem ? parseFloat(menuItem.price_kwd) * item.quantity : 0);
-          }, 0);
-          const utter = new window.SpeechSynthesisUtterance(`المجموع ${totalPrice.toFixed(3)} كويت دينار`);
-          window.speechSynthesis.speak(utter);
+      if (!recognized.some(r => r.name === item.name)) {
+        recognized.push({ name: item.name, quantity: qty });
+      }
+    }
+  });
+});
 
-          // Send order to backend
-          fetch('/api/place-order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ items: recognizedItems }),
-          })
-            .then(res => res.json())
-            .then(data => {
-              if (data.success) {
-                console.log('Order placed and quantity_sold updated!');
-              } else {
-                console.error('Order placement error:', data.error);
-              }
-            })
-            .catch(err => {
-              console.error('Order placement failed:', err);
+          // Prefer best match if multiple
+          if (recognized.length > 1) {
+            recognized.sort((a, b) => {
+              const aWords = a.name.toLowerCase().split(/\s+/);
+              const bWords = b.name.toLowerCase().split(/\s+/);
+              const msgWords = msg.toLowerCase().split(/\s+/);
+              const aOverlap = aWords.filter(w => msgWords.includes(w)).length;
+              const bOverlap = bWords.filter(w => msgWords.includes(w)).length;
+              return bOverlap - aOverlap;
             });
-        }, 6000 + Math.floor(Math.random() * 2000)); // 6-8 seconds
+            recognized.splice(1);
+          }
+
+          // ...inside onMessage, after recognized is filled...
+if (recognized.length > 0) {
+  setRecognizedItems(prev => {
+    // Create a copy of previous items
+    const updated = [...prev];
+    recognized.forEach(newItem => {
+      const idx = updated.findIndex(i => i.name === newItem.name);
+      if (idx !== -1) {
+        // If item exists, add to its quantity
+        updated[idx].quantity += newItem.quantity;
+      } else {
+        // If new, add it
+        updated.push(newItem);
+      }
+    });
+    return updated;
+  });
+  setHasSpokenTotal(false);
+  setShowVideo(false);
+  console.log("Order detected:", recognized);
+}
+        }
+
+        // Speak total price if agent says 'خليني احسبلك المجموع' or 'المجموع' (only first time)
+        if (
+          message.message &&
+          (/خليني احسبلك المجموع|المجموع/.test(message.message)) &&
+          !hasSpokenTotal &&
+          recognizedItems.length > 0
+        ) {
+          setHasSpokenTotal(true);
+          setTimeout(() => {
+            const totalPrice = recognizedItems.reduce((sum, item) => {
+              const menuItem = menu.find(m => m.name === item.name);
+              return sum + (menuItem ? parseFloat(menuItem.price_kwd) * item.quantity : 0);
+            }, 0);
+            const utter = new window.SpeechSynthesisUtterance(`المجموع ${totalPrice.toFixed(3)} كويت دينار`);
+            window.speechSynthesis.speak(utter);
+
+            // Send order to backend
+            fetch('/api/place-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ items: recognizedItems }),
+            })
+              .then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  console.log('Order placed and quantity_sold updated!');
+                } else {
+                  console.error('Order placement error:', data.error);
+                }
+              })
+              .catch(err => {
+                console.error('Order placement failed:', err);
+              });
+          }, 6000 + Math.floor(Math.random() * 2000)); // 6-8 seconds
+        }
+      } else if (message.source === "ai") {
+        // Agent message can be used for UI, but not for order detection
       }
     },
   });
@@ -248,7 +299,7 @@ export function ConvAI() {
   return (
     <>
    <AnimatePresence>
-        {showVideo && (
+        {/* {showVideo && (
           <motion.video
             key="video"
             ref={videoRef}
@@ -262,11 +313,14 @@ export function ConvAI() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.6 } }}
           />
-        )}
+        )} */}
       </AnimatePresence>
       <div className="flex flex-col items-center gap-y-8 w-full h-full relative z-10">
         <AnimatePresence>
-          {!showVideo && recognizedItems.length > 0 && (
+          {
+          // !showVideo && 
+          recognizedItems.length > 0
+           && (
             <motion.div
               key="order"
               initial={{ opacity: 0, y: 40 }}
