@@ -92,14 +92,17 @@ body {
 }
 
 .orb-active {
-    background: radial-gradient(circle at center, #c7c7c7, #908e8e, #595959);
+    background: radial-gradient(circle at center,
+        rgba(255, 255, 255, 0.8),
+    rgba(170, 221, 247, 0.903),
+    rgba(254, 254, 254, 0.748));
 }
 
 .orb-inactive {
     background: radial-gradient(circle at center,
-    rgba(200, 200, 200, 0.8),
-    rgba(150, 150, 150, 0.6),
-    rgba(100, 100, 100, 0.4));
+    rgba(255, 255, 255, 0.8),
+    rgba(170, 221, 247, 0.903),
+    rgba(254, 254, 254, 0.748));
 }
 
 /* Inner Gradient Layer for Waving Effect */

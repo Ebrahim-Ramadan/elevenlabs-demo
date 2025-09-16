@@ -29,11 +29,11 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
   </Link>
   <Link
     href="/inventory"
-    className="w-fit text-xs md:text-sm flex gap-2 items-center justify-end text-blue-700 hover:text-blue-900 font-semibold px-3 py-1 rounded-lg transition-all shadow-sm bg-blue-50 hover:bg-blue-100"
+    className="w-fit text-xs flex gap-2 items-center justify-end text-blue-700 hover:text-blue-900 font-semibold px-3 py-1 rounded-lg transition-all shadow-sm bg-blue-50 hover:bg-blue-100"
   >
-    <Folder size={18} className="text-blue-600" />
+    <Folder size={14}  />
     Inventory
-    <ArrowRight size={16} className="ml-1" />
+    <ArrowRight size={14}  />
   </Link>
 </nav>
             {children}

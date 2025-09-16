@@ -312,6 +312,7 @@ export function ConvAI() {
             </motion.div>
           )}
         </AnimatePresence>
+        {/* circle */}
         <div className="rounded-3xl fixed bottom-4 left-0 right-0 mx-auto w-fit z-50">
           <div className="flex flex-col gap-y-4 text-center">
             <div
@@ -323,7 +324,7 @@ export function ConvAI() {
                   ? "animate-orb-slow orb-inactive"
                   : "orb-inactive"
               )}
-              style={{ width: 80, height: 80, display: "flex", alignItems: "center", justifyContent: "center" }}
+              style={{ width: 100, height: 100, display: "flex", alignItems: "center", justifyContent: "center" }}
               onClick={() => {
                 if (conversation.status === "connected") {
                   stopConversation();
@@ -346,11 +347,11 @@ export function ConvAI() {
                   alt="Caribou Logo"
                   width={100}
                   height={100}
-                  className={"w-5 h-auto"}
+                  className={"w-6 h-auto"}
                 />
               )}
               {conversation.status === "connected" && (
-                <Square className="w-5 h-auto text-neutral-600 transition-all duration-300 group-hover:text-neutral-900" fill="currentColor" />
+                <Square className="w-5 h-auto text-[#01bcd0ff] transition-all duration-300 group-hover:text-neutral-900" fill="currentColor" />
               )}
             </div>
           </div>
