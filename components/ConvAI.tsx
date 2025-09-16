@@ -243,7 +243,8 @@ export function ConvAI() {
           <motion.video
             key="video"
             ref={videoRef}
-            src="/large-thumbnail20250216-3097548-1djrrxq.mp4"
+            src={Math.random() < 0.5 ? "/caribou-animated-icon-gif-download-10411730.mp4" : "/large-thumbnail20250216-3097548-1djrrxq.mp4"}
+            // src="/large-thumbnail20250216-3097548-1djrrxq.mp4"
             autoPlay
             loop
             muted
